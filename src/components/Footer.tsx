@@ -7,9 +7,9 @@ const Footer = () => {
             <div className="card-footer d-flex justify-center">
               <p>
                 Copyright © <span id="year"></span>{" "}
-                <span className="text-heading">Dashnix</span> Designed by{" "}
-                <a href="https://themeforest.net/user/topylo" target="_blank">
-                  Topylo
+                <span className="text-heading">Lattice HR</span> Powered by{" "}
+                <a href="https://techiefy.co.uk/one/default" target="_blank">
+                  Techiefy UK
                 </a>{" "}
                 All rights reserved
               </p>

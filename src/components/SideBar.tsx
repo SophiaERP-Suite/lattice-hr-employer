@@ -5,10 +5,18 @@ const SideBar = () => {
         {/* start app-sidebar-header */}
         <div className="app-sidebar-header">
           <a href="index.html" className="desktop-logo">
-            <img src="/assets/images/logo/logo-black.svg" alt="image" />
+            <img
+              src="/assets/images/logo/lattice_logo.png"
+              className="app-logo"
+              alt="image"
+            />
           </a>
           <a href="index.html" className="desktop-dark">
-            <img src="/assets/images/logo/logo-white.svg" alt="image" />
+            <img
+              src="/assets/images/logo/lattice_logo.png"
+              className="app-logo"
+              alt="image"
+            />
           </a>
         </div>
         {/* end app-sidebar-header */}
@@ -18,12 +26,14 @@ const SideBar = () => {
           <nav className="app-sidebar-menu-wrapper nav flex-column sub-open">
             <div className="sidebar-left" id="sidebar-left"></div>
             <ul className="app-sidebar-main-menu">
-              <li className="sidebar-menu-category">
-                <span className="category-name">Main</span>
+              <li className="employer-profile-box">
+                <img src="/assets/images/logo/company-logo.png" />
+
+                <h6>Oxford Technologies</h6>
               </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
+
+              <li className="slide ">
+                <a href="/dashboard" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -37,35 +47,30 @@ const SideBar = () => {
                   </div>
                   <span className="sidebar-menu-label">Dashboard</span>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="index.html">
-                      Ecommerce
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="index-2.html">
-                      CRM
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="index-3.html">
-                      HRM
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="index-4.html">
-                      Job
-                    </a>
-                  </li>
-                </ul>
               </li>
 
-              <li className="sidebar-menu-category">
-                <span className="category-name">Apps</span>
+              <li className="slide">
+                <a href="/job-management" className="sidebar-menu-item">
+                  <div className="side-menu-icon">
+                    <i className="">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path d="M12 11C14.7614 11 17 13.2386 17 16V22H15V16C15 14.4023 13.7511 13.0963 12.1763 13.0051L12 13C10.4023 13 9.09634 14.2489 9.00509 15.8237L9 16V22H7V16C7 13.2386 9.23858 11 12 11ZM5.5 14C5.77885 14 6.05009 14.0326 6.3101 14.0942C6.14202 14.594 6.03873 15.122 6.00896 15.6693L6 16L6.0007 16.0856C5.88757 16.0456 5.76821 16.0187 5.64446 16.0069L5.5 16C4.7203 16 4.07955 16.5949 4.00687 17.3555L4 17.5V22H2V17.5C2 15.567 3.567 14 5.5 14ZM18.5 14C20.433 14 22 15.567 22 17.5V22H20V17.5C20 16.7203 19.4051 16.0796 18.6445 16.0069L18.5 16C18.3248 16 18.1566 16.03 18.0003 16.0852L18 16C18 15.3343 17.8916 14.694 17.6915 14.0956C17.9499 14.0326 18.2211 14 18.5 14ZM5.5 8C6.88071 8 8 9.11929 8 10.5C8 11.8807 6.88071 13 5.5 13C4.11929 13 3 11.8807 3 10.5C3 9.11929 4.11929 8 5.5 8ZM18.5 8C19.8807 8 21 9.11929 21 10.5C21 11.8807 19.8807 13 18.5 13C17.1193 13 16 11.8807 16 10.5C16 9.11929 17.1193 8 18.5 8ZM5.5 10C5.22386 10 5 10.2239 5 10.5C5 10.7761 5.22386 11 5.5 11C5.77614 11 6 10.7761 6 10.5C6 10.2239 5.77614 10 5.5 10ZM18.5 10C18.2239 10 18 10.2239 18 10.5C18 10.7761 18.2239 11 18.5 11C18.7761 11 19 10.7761 19 10.5C19 10.2239 18.7761 10 18.5 10ZM12 2C14.2091 2 16 3.79086 16 6C16 8.20914 14.2091 10 12 10C9.79086 10 8 8.20914 8 6C8 3.79086 9.79086 2 12 2ZM12 4C10.8954 4 10 4.89543 10 6C10 7.10457 10.8954 8 12 8C13.1046 8 14 7.10457 14 6C14 4.89543 13.1046 4 12 4Z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                  <span className="sidebar-menu-label">Job Management </span>
+                </a>
               </li>
+
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -77,7 +82,7 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">CRM Apps</span>
+                  <span className="sidebar-menu-label">Induction</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -119,195 +124,12 @@ const SideBar = () => {
                   </li>
                 </ul>
               </li>
+
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 11C14.7614 11 17 13.2386 17 16V22H15V16C15 14.4023 13.7511 13.0963 12.1763 13.0051L12 13C10.4023 13 9.09634 14.2489 9.00509 15.8237L9 16V22H7V16C7 13.2386 9.23858 11 12 11ZM5.5 14C5.77885 14 6.05009 14.0326 6.3101 14.0942C6.14202 14.594 6.03873 15.122 6.00896 15.6693L6 16L6.0007 16.0856C5.88757 16.0456 5.76821 16.0187 5.64446 16.0069L5.5 16C4.7203 16 4.07955 16.5949 4.00687 17.3555L4 17.5V22H2V17.5C2 15.567 3.567 14 5.5 14ZM18.5 14C20.433 14 22 15.567 22 17.5V22H20V17.5C20 16.7203 19.4051 16.0796 18.6445 16.0069L18.5 16C18.3248 16 18.1566 16.03 18.0003 16.0852L18 16C18 15.3343 17.8916 14.694 17.6915 14.0956C17.9499 14.0326 18.2211 14 18.5 14ZM5.5 8C6.88071 8 8 9.11929 8 10.5C8 11.8807 6.88071 13 5.5 13C4.11929 13 3 11.8807 3 10.5C3 9.11929 4.11929 8 5.5 8ZM18.5 8C19.8807 8 21 9.11929 21 10.5C21 11.8807 19.8807 13 18.5 13C17.1193 13 16 11.8807 16 10.5C16 9.11929 17.1193 8 18.5 8ZM5.5 10C5.22386 10 5 10.2239 5 10.5C5 10.7761 5.22386 11 5.5 11C5.77614 11 6 10.7761 6 10.5C6 10.2239 5.77614 10 5.5 10ZM18.5 10C18.2239 10 18 10.2239 18 10.5C18 10.7761 18.2239 11 18.5 11C18.7761 11 19 10.7761 19 10.5C19 10.2239 18.7761 10 18.5 10ZM12 2C14.2091 2 16 3.79086 16 6C16 8.20914 14.2091 10 12 10C9.79086 10 8 8.20914 8 6C8 3.79086 9.79086 2 12 2ZM12 4C10.8954 4 10 4.89543 10 6C10 7.10457 10.8954 8 12 8C13.1046 8 14 7.10457 14 6C14 4.89543 13.1046 4 12 4Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">HRM Apps</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-employee-dashboard.html"
-                      className="sidebar-menu-item"
-                    >
-                      Employee Dashboard
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-employee.html" className="sidebar-menu-item">
-                      Employee
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-employee-details.html"
-                      className="sidebar-menu-item"
-                    >
-                      Employee Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-designations.html"
-                      className="sidebar-menu-item"
-                    >
-                      Designations
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-attendance.html" className="sidebar-menu-item">
-                      Admin Attendance
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-employee-attendance.html"
-                      className="sidebar-menu-item"
-                    >
-                      Employee Attendance
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-biometric-attendance.html"
-                      className="sidebar-menu-item"
-                    >
-                      Biometric Attendance
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-office-loan.html"
-                      className="sidebar-menu-item"
-                    >
-                      Office Loan
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-personal-loan.html"
-                      className="sidebar-menu-item"
-                    >
-                      Personal Loan
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-leaves.html" className="sidebar-menu-item">
-                      Admin Leave
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-leaves-employee.html"
-                      className="sidebar-menu-item"
-                    >
-                      Employee Leave
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-holidays.html" className="sidebar-menu-item">
-                      Holidays
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-timesheet.html" className="sidebar-menu-item">
-                      Time Sheet
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-schedule.html" className="sidebar-menu-item">
-                      Schedule
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-overtime.html" className="sidebar-menu-item">
-                      Overtime
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-warning.html" className="sidebar-menu-item">
-                      Warning
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-termination.html"
-                      className="sidebar-menu-item"
-                    >
-                      Termination
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-training.html" className="sidebar-menu-item">
-                      Training
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a
-                      href="hrm-resignation.html"
-                      className="sidebar-menu-item"
-                    >
-                      Resignation
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-promotion.html" className="sidebar-menu-item">
-                      Promotion
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-award.html" className="sidebar-menu-item">
-                      Award
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-meeting.html" className="sidebar-menu-item">
-                      Meeting
-                    </a>
-                  </li>
-                  <li className="slide">
-                    {" "}
-                    <a href="hrm-transfer.html" className="sidebar-menu-item">
-                      Transfer
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -319,7 +141,7 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Ecommerce Admin</span>
+                  <span className="sidebar-menu-label">Compliance</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -467,7 +289,10 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -479,7 +304,9 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Ecommerce Customer</span>
+                  <span className="sidebar-menu-label">
+                    Contract Management
+                  </span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -518,7 +345,10 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -530,7 +360,7 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Jobs Apps</span>
+                  <span className="sidebar-menu-label">Work & Attendance</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -574,7 +404,10 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -586,7 +419,7 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Company</span>
+                  <span className="sidebar-menu-label">Timesheet</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -606,7 +439,10 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -618,7 +454,7 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Projects</span>
+                  <span className="sidebar-menu-label">Invoice & Billing</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -643,7 +479,10 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -655,7 +494,7 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Payroll</span>
+                  <span className="sidebar-menu-label">Payment</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -691,7 +530,10 @@ const SideBar = () => {
                 </ul>
               </li>
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -703,7 +545,7 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Invoice</span>
+                  <span className="sidebar-menu-label">Notifications</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
@@ -732,76 +574,11 @@ const SideBar = () => {
                   </li>
                 </ul>
               </li>
-              <li className="slide">
-                <a href="contacts.html" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M19 7H24V9H19V7ZM17 12H24V14H17V12ZM20 17H24V19H20V17ZM2 22C2 17.5817 5.58172 14 10 14C14.4183 14 18 17.5817 18 22H16C16 18.6863 13.3137 16 10 16C6.68629 16 4 18.6863 4 22H2ZM10 13C6.685 13 4 10.315 4 7C4 3.685 6.685 1 10 1C13.315 1 16 3.685 16 7C16 10.315 13.315 13 10 13ZM10 11C12.21 11 14 9.21 14 7C14 4.79 12.21 3 10 3C7.79 3 6 4.79 6 7C6 9.21 7.79 11 10 11Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Contacts</span>
-                </a>
-              </li>
-              <li className="slide">
-                <a href="full-calendar.html" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 11H4V19H20V11ZM7 5H4V9H20V5H17V7H15V5H9V7H7V5Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Full Calendar</span>
-                </a>
-              </li>
-              <li className="slide">
-                <a href="chat.html" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM10 3H14V5H10C6.68629 5 4 7.68629 4 11C4 14.61 6.46208 16.9656 12 19.4798V17H14C17.3137 17 20 14.3137 20 11H22C22 15.4183 18.4183 19 14 19V22.5C9 20.5 2 17.5 2 11C2 6.58172 5.58172 3 10 3Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Chat</span>
-                </a>
-              </li>
-              <li className="slide">
-                <a href="email.html" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM20 7.23792L12.0718 14.338L4 7.21594V19H20V7.23792ZM4.51146 5L12.0619 11.662L19.501 5H4.51146Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Email</span>
-                </a>
-              </li>
-
-              <li className="sidebar-menu-category">
-                <span className="category-name">Pages</span>
-              </li>
               <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -809,1044 +586,36 @@ const SideBar = () => {
                         viewBox="0 0 24 24"
                         fill="currentColor"
                       >
-                        <path d="M12 1L20.2169 2.82598C20.6745 2.92766 21 3.33347 21 3.80217V13.7889C21 15.795 19.9974 17.6684 18.3282 18.7812L12 23L5.6718 18.7812C4.00261 17.6684 3 15.795 3 13.7889V3.80217C3 3.33347 3.32553 2.92766 3.78307 2.82598L12 1ZM12 3.04879L5 4.60434V13.7889C5 15.1263 5.6684 16.3752 6.7812 17.1171L12 20.5963L17.2188 17.1171C18.3316 16.3752 19 15.1263 19 13.7889V4.60434L12 3.04879ZM12 7C13.1046 7 14 7.89543 14 9C14 9.73984 13.5983 10.3858 13.0011 10.7318L13 15H11L10.9999 10.7324C10.4022 10.3866 10 9.74025 10 9C10 7.89543 10.8954 7 12 7Z"></path>
+                        <path d="M3.33946 17.0002C2.90721 16.2515 2.58277 15.4702 2.36133 14.6741C3.3338 14.1779 3.99972 13.1668 3.99972 12.0002C3.99972 10.8345 3.3348 9.824 2.36353 9.32741C2.81025 7.71651 3.65857 6.21627 4.86474 4.99001C5.7807 5.58416 6.98935 5.65534 7.99972 5.072C9.01009 4.48866 9.55277 3.40635 9.4962 2.31604C11.1613 1.8846 12.8847 1.90004 14.5031 2.31862C14.4475 3.40806 14.9901 4.48912 15.9997 5.072C17.0101 5.65532 18.2187 5.58416 19.1346 4.99007C19.7133 5.57986 20.2277 6.25151 20.66 7.00021C21.0922 7.7489 21.4167 8.53025 21.6381 9.32628C20.6656 9.82247 19.9997 10.8336 19.9997 12.0002C19.9997 13.166 20.6646 14.1764 21.6359 14.673C21.1892 16.2839 20.3409 17.7841 19.1347 19.0104C18.2187 18.4163 17.0101 18.3451 15.9997 18.9284C14.9893 19.5117 14.4467 20.5941 14.5032 21.6844C12.8382 22.1158 11.1148 22.1004 9.49633 21.6818C9.55191 20.5923 9.00929 19.5113 7.99972 18.9284C6.98938 18.3451 5.78079 18.4162 4.86484 19.0103C4.28617 18.4205 3.77172 17.7489 3.33946 17.0002ZM8.99972 17.1964C10.0911 17.8265 10.8749 18.8227 11.2503 19.9659C11.7486 20.0133 12.2502 20.014 12.7486 19.9675C13.1238 18.8237 13.9078 17.8268 14.9997 17.1964C16.0916 16.5659 17.347 16.3855 18.5252 16.6324C18.8146 16.224 19.0648 15.7892 19.2729 15.334C18.4706 14.4373 17.9997 13.2604 17.9997 12.0002C17.9997 10.74 18.4706 9.5632 19.2729 8.6665C19.1688 8.4405 19.0538 8.21822 18.9279 8.00021C18.802 7.78219 18.667 7.57148 18.5233 7.36842C17.3457 7.61476 16.0911 7.43414 14.9997 6.80405C13.9083 6.17395 13.1246 5.17768 12.7491 4.03455C12.2509 3.98714 11.7492 3.98646 11.2509 4.03292C10.8756 5.17671 10.0916 6.17364 8.99972 6.80405C7.9078 7.43447 6.65245 7.61494 5.47428 7.36803C5.18485 7.77641 4.93463 8.21117 4.72656 8.66637C5.52881 9.56311 5.99972 10.74 5.99972 12.0002C5.99972 13.2604 5.52883 14.4372 4.72656 15.3339C4.83067 15.5599 4.94564 15.7822 5.07152 16.0002C5.19739 16.2182 5.3324 16.4289 5.47612 16.632C6.65377 16.3857 7.90838 16.5663 8.99972 17.1964ZM11.9997 15.0002C10.3429 15.0002 8.99972 13.6571 8.99972 12.0002C8.99972 10.3434 10.3429 9.00021 11.9997 9.00021C13.6566 9.00021 14.9997 10.3434 14.9997 12.0002C14.9997 13.6571 13.6566 15.0002 11.9997 15.0002ZM11.9997 13.0002C12.552 13.0002 12.9997 12.5525 12.9997 12.0002C12.9997 11.4479 12.552 11.0002 11.9997 11.0002C11.4474 11.0002 10.9997 11.4479 10.9997 12.0002C10.9997 12.5525 11.4474 13.0002 11.9997 13.0002Z"></path>
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Authentication</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Sign In
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-signin-basic.html"
-                        >
-                          Basic
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-signin-cover.html"
-                        >
-                          Cover
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Sign Up
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-signup-basic.html"
-                        >
-                          Basic
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-signup-cover.html"
-                        >
-                          Cover
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Reset Password
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-reset-password-basic.html"
-                        >
-                          Basic
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-reset-password-cover.html"
-                        >
-                          Cover
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Forgot Password
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-forgot-password-basic.html"
-                        >
-                          Basic
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-forgot-password-cover.html"
-                        >
-                          Cover
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Lock Screen
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-lockscreen-basic.html"
-                        >
-                          Basic
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-lockscreen-cover.html"
-                        >
-                          Cover
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Coming Soon
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-coming-soon-basic.html"
-                        >
-                          Basic
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="auth-coming-soon-cover.html"
-                        >
-                          Cover
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="auth-maintenance.html"
-                    >
-                      Under Maintenance
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="auth-offline.html">
-                      Offline
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Error</span>
+                  <span className="sidebar-menu-label">Settings</span>
                   <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
                 <ul className="sidebar-menu child1">
                   <li className="slide">
-                    <a className="sidebar-menu-item" href="auth-404-error.html">
-                      404 Basic
+                    <a className="sidebar-menu-item" href="invoice.html">
+                      Invoice List
                     </a>
                   </li>
                   <li className="slide">
                     <a
                       className="sidebar-menu-item"
-                      href="auth-404-error-cover.html"
+                      href="invoice-preview.html"
                     >
-                      404 Cover
+                      Invoice
                     </a>
                   </li>
                   <li className="slide">
-                    <a className="sidebar-menu-item" href="auth-500-error.html">
-                      500
+                    <a className="sidebar-menu-item" href="invoice-create.html">
+                      Invoice Create
                     </a>
                   </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M4 22C4 17.5817 7.58172 14 12 14C16.4183 14 20 17.5817 20 22H18C18 18.6863 15.3137 16 12 16C8.68629 16 6 18.6863 6 22H4ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">User</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
                   <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="app-user-account.html"
-                    >
-                      Account
+                    <a className="sidebar-menu-item" href="invoice-edit.html">
+                      Invoice Edit
                     </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="app-user-billing.html"
-                    >
-                      Billing & Plans
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="app-user-security.html"
-                    >
-                      Security
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M5 8V20H19V8H5ZM5 6H19V4H5V6ZM20 22H4C3.44772 22 3 21.5523 3 21V3C3 2.44772 3.44772 2 4 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22ZM7 10H11V14H7V10ZM7 16H17V18H7V16ZM13 11H17V13H13V11Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Pages</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Blog
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a className="sidebar-menu-item" href="blog.html">
-                          Blog Grid
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a className="sidebar-menu-item" href="blog-list.html">
-                          Blog List
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="blog-details.html"
-                        >
-                          Blog Details
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="blog-create.html"
-                        >
-                          Create Blog
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="search-results.html">
-                      Search Result
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="team.html">
-                      Team
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="timeline.html">
-                      Timeline
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="faq.html">
-                      FAq's
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="terms-conditions.html"
-                    >
-                      Terms & Conditions
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="privacy-policy.html">
-                      Privacy & Policy
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="refund-policy.html">
-                      Refund Policy
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="blank-page.html">
-                      Blank Page
-                    </a>
-                  </li>
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Pricing
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a className="sidebar-menu-item" href="pricing.html">
-                          Pricing Plan
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          className="sidebar-menu-item"
-                          href="pricing-details.html"
-                        >
-                          Pricing Details
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-
-              <li className="sidebar-menu-category">
-                <span className="category-name">Components</span>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M4 21C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4ZM8 10H5V19H8V10ZM19 10H10V19H19V10ZM19 5H5V8H19V5Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Base UI</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a href="ui-accordions.html" className="sidebar-menu-item">
-                      Accordion
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-alerts.html" className="sidebar-menu-item">
-                      Alerts
-                    </a>
-                  </li>
-
-                  <li className="slide">
-                    <a href="ui-badges.html" className="sidebar-menu-item">
-                      Badges
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-buttons.html" className="sidebar-menu-item">
-                      Buttons
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-colors.html" className="sidebar-menu-item">
-                      Colors
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-cards.html" className="sidebar-menu-item">
-                      Cards
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-carousel.html" className="sidebar-menu-item">
-                      Carousel
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-dropdowns.html" className="sidebar-menu-item">
-                      Dropdowns
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-list-group.html" className="sidebar-menu-item">
-                      List group
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-grid.html" className="sidebar-menu-item">
-                      Grid
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-tabs.html" className="sidebar-menu-item">
-                      Tabs
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-modals.html" className="sidebar-menu-item">
-                      Modals
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-offcanvas.html" className="sidebar-menu-item">
-                      Offcanvas
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-pagination.html" className="sidebar-menu-item">
-                      Pagination
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="ui-placeholders.html"
-                      className="sidebar-menu-item"
-                    >
-                      Placeholders
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-popovers.html" className="sidebar-menu-item">
-                      Popovers
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-progress.html" className="sidebar-menu-item">
-                      Progress
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-toasts.html" className="sidebar-menu-item">
-                      Toasts
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-tooltip.html" className="sidebar-menu-item">
-                      Tooltip
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-embed-video.html" className="sidebar-menu-item">
-                      Embed Video
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-ribbons.html" className="sidebar-menu-item">
-                      Ribbons
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-avatar.html" className="sidebar-menu-item">
-                      Avatar
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="ui-link.html" className="sidebar-menu-item">
-                      Link
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M20.0833 15.1999L21.2854 15.9212C21.5221 16.0633 21.5989 16.3704 21.4569 16.6072C21.4146 16.6776 21.3557 16.7365 21.2854 16.7787L12.5144 22.0412C12.1977 22.2313 11.8021 22.2313 11.4854 22.0412L2.71451 16.7787C2.47772 16.6366 2.40093 16.3295 2.54301 16.0927C2.58523 16.0223 2.64413 15.9634 2.71451 15.9212L3.9166 15.1999L11.9999 20.0499L20.0833 15.1999ZM20.0833 10.4999L21.2854 11.2212C21.5221 11.3633 21.5989 11.6704 21.4569 11.9072C21.4146 11.9776 21.3557 12.0365 21.2854 12.0787L11.9999 17.6499L2.71451 12.0787C2.47772 11.9366 2.40093 11.6295 2.54301 11.3927C2.58523 11.3223 2.64413 11.2634 2.71451 11.2212L3.9166 10.4999L11.9999 15.3499L20.0833 10.4999ZM12.5144 1.30864L21.2854 6.5712C21.5221 6.71327 21.5989 7.0204 21.4569 7.25719C21.4146 7.32757 21.3557 7.38647 21.2854 7.42869L11.9999 12.9999L2.71451 7.42869C2.47772 7.28662 2.40093 6.97949 2.54301 6.7427C2.58523 6.67232 2.64413 6.61343 2.71451 6.5712L11.4854 1.30864C11.8021 1.11864 12.1977 1.11864 12.5144 1.30864ZM11.9999 3.33233L5.88723 6.99995L11.9999 10.6676L18.1126 6.99995L11.9999 3.33233Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Advance UI</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a
-                      href="advance-ui-sweet-alert.html"
-                      className="sidebar-menu-item"
-                    >
-                      Sweet Alerts
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="advance-ui-media-player.html"
-                      className="sidebar-menu-item"
-                    >
-                      Media Player
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="advance-ui-rating.html"
-                      className="sidebar-menu-item"
-                    >
-                      Rating
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="advance-ui-sortable.html"
-                      className="sidebar-menu-item"
-                    >
-                      SortableJS
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="advance-ui-tour.html"
-                      className="sidebar-menu-item"
-                    >
-                      Tour
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="advance-ui-animation.html"
-                      className="sidebar-menu-item"
-                    >
-                      Animation
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="advance-ui-swiper.html"
-                      className="sidebar-menu-item"
-                    >
-                      Swiper Slider
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M16.7574 2.99678L14.7574 4.99678H5V18.9968H19V9.23943L21 7.23943V19.9968C21 20.5491 20.5523 20.9968 20 20.9968H4C3.44772 20.9968 3 20.5491 3 19.9968V3.99678C3 3.4445 3.44772 2.99678 4 2.99678H16.7574ZM20.4853 2.09729L21.8995 3.5115L12.7071 12.7039L11.2954 12.7064L11.2929 11.2897L20.4853 2.09729Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Forms</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="form-basic-input.html"
-                    >
-                      Form Basic Input
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="form-checkboxs-radios.html"
-                    >
-                      Checkboxs & Radios
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="forms-input-groups.html"
-                    >
-                      Forms Input Groups
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="forms-range.html">
-                      Range
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="forms-advance.html">
-                      Form Advance
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="forms-validation.html"
-                    >
-                      Form Validation
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="forms-layout.html">
-                      Form Layout
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="forms-editors.html">
-                      Form Editors
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="forms-date-and-time-pickr.html"
-                    >
-                      Date & Time Picker
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="forms-file-uploads.html"
-                    >
-                      File Upload
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="forms-select2.html">
-                      Select2
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="forms-custom-options.html"
-                    >
-                      Custom Option
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="forms-wizard.html">
-                      Forms Wizard
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M4 8H20V5H4V8ZM14 19V10H10V19H14ZM16 19H20V10H16V19ZM8 19V10H4V19H8ZM3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Tables</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="tables.html">
-                      Tables
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="data-tables.html">
-                      Data Tables
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M3 12H5V21H3V12ZM19 8H21V21H19V8ZM11 2H13V21H11V2Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Charts</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Apexcharts
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          href="apex-charts-line.html"
-                          className="sidebar-menu-item"
-                        >
-                          Line Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-area.html"
-                          className="sidebar-menu-item"
-                        >
-                          Area Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-column.html"
-                          className="sidebar-menu-item"
-                        >
-                          Column Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-bar.html"
-                          className="sidebar-menu-item"
-                        >
-                          Bar Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-mixed.html"
-                          className="sidebar-menu-item"
-                        >
-                          Mixed Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-range-area.html"
-                          className="sidebar-menu-item"
-                        >
-                          Range Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-timeline.html"
-                          className="sidebar-menu-item"
-                        >
-                          Timeline Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-funnel.html"
-                          className="sidebar-menu-item"
-                        >
-                          Funnel Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-candlestick.html"
-                          className="sidebar-menu-item"
-                        >
-                          Candlestick Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-box-whisker.html"
-                          className="sidebar-menu-item"
-                        >
-                          Box & Whisker Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-pie.html"
-                          className="sidebar-menu-item"
-                        >
-                          Pie Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-radial-bar.html"
-                          className="sidebar-menu-item"
-                        >
-                          Radial Bar Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-radar.html"
-                          className="sidebar-menu-item"
-                        >
-                          Radar Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-polar-area.html"
-                          className="sidebar-menu-item"
-                        >
-                          Polar Area Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-treemap.html"
-                          className="sidebar-menu-item"
-                        >
-                          Tree Map Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-heatmap.html"
-                          className="sidebar-menu-item"
-                        >
-                          Heatmap Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-bubble.html"
-                          className="sidebar-menu-item"
-                        >
-                          Bubble Charts
-                        </a>
-                      </li>
-                      <li className="slide">
-                        <a
-                          href="apex-charts-scatter.html"
-                          className="sidebar-menu-item"
-                        >
-                          Scatter Charts
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="slide">
-                    <a href="chartjs.html" className="sidebar-menu-item">
-                      Chart.js
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="echarts.html" className="sidebar-menu-item">
-                      E Charts
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M6.36461 6L15.1491 15.6629L15.8699 15.38C17.5538 14.719 18.7326 13.2237 18.9607 11.4839C18.8083 11.4946 18.655 11.5 18.501 11.5C15.2512 11.5 12.5584 9.11509 12.0774 6H6.36461ZM14.001 5C14.001 7.48528 16.0157 9.5 18.501 9.5C19.306 9.5 20.0617 9.28861 20.7155 8.91831C20.9013 9.53558 21.001 10.1891 21.001 10.8654C21.001 13.7561 19.1794 16.2295 16.6006 17.2417L20.001 21H3.00098V4H14.001C14.0381 4 14.0753 4.00028 14.1123 4.00085C14.0394 4.3222 14.001 4.65661 14.001 5ZM18.501 7.5C17.1203 7.5 16.001 6.38071 16.001 5C16.001 3.61929 17.1203 2.5 18.501 2.5C19.8817 2.5 21.001 3.61929 21.001 5C21.001 6.38071 19.8817 7.5 18.501 7.5ZM5.00098 7.47V19H15.481L5.00098 7.47Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Icons</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a href="icon-remixicon.html" className="sidebar-menu-item">
-                      Remix Icon
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="icon-tabler-icons.html"
-                      className="sidebar-menu-item"
-                    >
-                      Tabler Icon
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="icon-line-awesome.html"
-                      className="sidebar-menu-item"
-                    >
-                      Line Awesome
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 20.8995L16.9497 15.9497C19.6834 13.2161 19.6834 8.78392 16.9497 6.05025C14.2161 3.31658 9.78392 3.31658 7.05025 6.05025C4.31658 8.78392 4.31658 13.2161 7.05025 15.9497L12 20.8995ZM12 23.7279L5.63604 17.364C2.12132 13.8492 2.12132 8.15076 5.63604 4.63604C9.15076 1.12132 14.8492 1.12132 18.364 4.63604C21.8787 8.15076 21.8787 13.8492 18.364 17.364L12 23.7279ZM12 13C13.1046 13 14 12.1046 14 11C14 9.89543 13.1046 9 12 9C10.8954 9 10 9.89543 10 11C10 12.1046 10.8954 13 12 13ZM12 15C9.79086 15 8 13.2091 8 11C8 8.79086 9.79086 7 12 7C14.2091 7 16 8.79086 16 11C16 13.2091 14.2091 15 12 15Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Maps</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a href="maps-google.html" className="sidebar-menu-item">
-                      Google
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="maps-vector.html" className="sidebar-menu-item">
-                      Vector
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="maps-leaflet.html" className="sidebar-menu-item">
-                      Leaflet
-                    </a>
-                  </li>
-                </ul>
-              </li>
-
-              <li className="sidebar-menu-category">
-                <span className="category-name">MultiLevel</span>
-              </li>
-              <li className="slide has-sub">
-                <a href="javascript:void(0);" className="sidebar-menu-item">
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M10 2C10.5523 2 11 2.44772 11 3V7C11 7.55228 10.5523 8 10 8H8V10H13V9C13 8.44772 13.4477 8 14 8H20C20.5523 8 21 8.44772 21 9V13C21 13.5523 20.5523 14 20 14H14C13.4477 14 13 13.5523 13 13V12H8V18H13V17C13 16.4477 13.4477 16 14 16H20C20.5523 16 21 16.4477 21 17V21C21 21.5523 20.5523 22 20 22H14C13.4477 22 13 21.5523 13 21V20H7C6.44772 20 6 19.5523 6 19V8H4C3.44772 8 3 7.55228 3 7V3C3 2.44772 3.44772 2 4 2H10ZM19 18H15V20H19V18ZM19 10H15V12H19V10ZM9 4H5V6H9V4Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">MultiLevel Menu</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Level-1.0
-                    </a>
-                  </li>
-                  <li className="slide has-sub">
-                    <a href="javascript:void(0);" className="sidebar-menu-item">
-                      Level-2.0
-                      <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                    </a>
-                    <ul className="sidebar-menu child2">
-                      <li className="slide">
-                        <a
-                          href="javascript:void(0);"
-                          className="sidebar-menu-item"
-                        >
-                          Level-2.1
-                        </a>
-                      </li>
-                      <li className="slide has-sub">
-                        <a
-                          href="javascript:void(0);"
-                          className="sidebar-menu-item"
-                        >
-                          Level-2.2
-                          <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                        </a>
-                        <ul className="sidebar-menu child3">
-                          <li className="slide">
-                            <a
-                              href="javascript:void(0);"
-                              className="sidebar-menu-item"
-                            >
-                              Level-3.0
-                            </a>
-                          </li>
-                          <li className="slide">
-                            <a
-                              href="javascript:void(0);"
-                              className="sidebar-menu-item"
-                            >
-                              Level-3.0
-                            </a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
                   </li>
                 </ul>
               </li>
