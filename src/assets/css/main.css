@@ -3226,7 +3226,7 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 
 .breadcrumb-example1 .breadcrumb-item+.breadcrumb-item::before {
   color: var(--color-text-muted);
-  content: var(--bs-breadcrumb-divider, "\f2e5");
+  content: none !important;
   font-family: var(--ff-remixicon) !important;
 }
 
@@ -11143,7 +11143,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .app-sidebar .sidebar-menu.child1 .sidebar-menu-item:hover,
 .app-sidebar .sidebar-menu.child2 .sidebar-menu-item:hover,
 .app-sidebar .sidebar-menu.child3 .sidebar-menu-item:hover {
-  color: var(--color-primary);
+  color: black;
 }
 
 [data-theme-mode=dark] .app-sidebar .sidebar-menu.child1 .sidebar-menu-item:hover,
@@ -11185,7 +11185,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .app-sidebar .sidebar-menu-item.active {
-  color: var(--color-primary);
+  color: black !important;
   background-color: var(--primary-rgba-1);
 }
 
@@ -11200,6 +11200,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 
 .app-sidebar .sidebar-menu-item.active .side-menu-icon svg * {
   fill: var(--color-primary);
+  fill: black !important;
 }
 
 [data-theme-mode=dark] .app-sidebar .sidebar-menu-item.active {
@@ -11235,7 +11236,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
 }
 
 .app-sidebar .sidebar-menu-item:hover .side-menu-icon svg * {
-  fill: var(--color-primary);
+  fill: black;
 }
 
 [data-theme-mode=dark] .app-sidebar .sidebar-menu-item:hover {
@@ -11295,6 +11296,8 @@ only screen and (min-width: 576px) and (max-width: 767px),
 .app-sidebar .sidebar-menu.child2 .sidebar-menu-item,
 .app-sidebar .sidebar-menu.child3 .sidebar-menu-item {
   padding: 7px 15px;
+  color: black;
+  font-size: 16px;
 }
 
 .app-sidebar .sidebar-menu.child1 .sidebar-menu-item:before,
@@ -11337,7 +11340,6 @@ only screen and (min-width: 576px) and (max-width: 767px),
   white-space: nowrap;
   position: relative;
   font-size: 14px;
-  color: var(--color-menu);
   font-weight: var(--fw-regular);
   line-height: 1;
   display: -moz-box;
@@ -11347,6 +11349,7 @@ only screen and (min-width: 576px) and (max-width: 767px),
   display: flex;
   align-items: center;
   text-transform: capitalize;
+  color: black !important;
 }
 
 [data-theme-mode=dark] .app-sidebar .sidebar-menu-label {
@@ -11358,23 +11361,26 @@ only screen and (min-width: 576px) and (max-width: 767px),
   line-height: 0;
   font-size: 14px;
   text-align: center;
-  color: var(--color-primary);
+  color: black !important;
   border-radius: 4px;
   line-height: 1;
 }
 
 .app-sidebar .side-menu-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
+  fill: black !important;
+  color: black !important;
 }
 
 .app-sidebar .side-menu-icon svg * {
-  fill: var(--color-menu);
+  fill: black;
   transition: all 0.3s ease-in-out;
 }
 
 [data-theme-mode=dark] .app-sidebar .side-menu-icon svg * {
   fill: var(--color-heading);
+  fill: black !important;
 }
 
 .app-sidebar .side-menu-angle {
@@ -17986,7 +17992,7 @@ only screen and (min-resolution: 2dppx) {
 }
 
 .app-logo {
-  width: 4rem;
+  width: 100%;
   height: 4rem;
 }
 
@@ -18077,6 +18083,63 @@ only screen and (min-resolution: 2dppx) {
 .job-filter-container select {
   width: fit-content;
 }
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 3rem 0 2rem;
+}
+
+select {
+  cursor: pointer;
+}
+
+.tag-container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: calc(100% - 80px) auto;
+  justify-content: space-between;
+  column-gap: 2rem;
+  row-gap: 1rem;
+}
+
+.tag-container .clear-all-tags {
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: red;
+  font-weight: 600;
+}
+
+.tag-input {
+  width: 100%;
+
+}
+
+.selected-tag-container {
+  margin: 1.5rem 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  row-gap: 1rem;
+}
+
+.ReactTags__error {
+  display: none;
+}
+
+.tag-suggestions {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  order: 3;
+  cursor: pointer;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 8px;
+  padding: 0.7rem;
+
+}
+
+
 
 /*----------------------------------------*/
 /*  tagify css end */

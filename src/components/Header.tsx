@@ -29,22 +29,19 @@ const Header = () => {
               </div>
               <div className="app-header-ls-logo">
                 {/* large screen logo */}
-                <a className="app-header-ls-dark-logo" href="index.html">
-                  <img src="/assets/images/logo/logo-black.svg" alt="image" />
+                <a className="app-header-ls-dark-logo" href="/dashboard">
+                  <img src="/assets/images/logo/latty.png" alt="image" />
                 </a>
-                <a className="app-header-ls-light-logo" href="index.html">
-                  <img src="/assets/images/logo/logo-white.svg" alt="image" />
+                <a className="app-header-ls-light-logo" href="/dashboard">
+                  <img src="/assets/images/logo/latty.png" alt="image" />
                 </a>
               </div>
               <div className="app-header-mobile-logo">
-                <a className="app-header-dark-logo" href="index.html">
-                  <img src="/assets/images/logo/mobile-logo.svg" alt="image" />
+                <a className="app-header-dark-logo" href="/dashboard">
+                  <img src="/assets/images/logo/latty.png" alt="image" />
                 </a>
-                <a className="app-header-light-logo" href="index.html">
-                  <img
-                    src="/assets/images/logo/mobile-logo-light.svg"
-                    alt="image"
-                  />
+                <a className="app-header-light-logo" href="/dashboard">
+                  <img src="/assets/images/logo/latty.png" alt="image" />
                 </a>
               </div>
             </div>

@@ -4,16 +4,16 @@ const SideBar = () => {
       <aside className="app-sidebar sticky" id="sidebar">
         {/* start app-sidebar-header */}
         <div className="app-sidebar-header">
-          <a href="index.html" className="desktop-logo">
+          <a href="/dashboard" className="desktop-logo">
             <img
-              src="/assets/images/logo/lattice_logo.png"
+              src="/assets/images/logo/latty.png"
               className="app-logo"
               alt="image"
             />
           </a>
-          <a href="index.html" className="desktop-dark">
+          <a href="/dashboard" className="desktop-dark">
             <img
-              src="/assets/images/logo/lattice_logo.png"
+              src="/assets/images/logo/latty.png"
               className="app-logo"
               alt="image"
             />
@@ -25,6 +25,11 @@ const SideBar = () => {
         <div className="app-sidebar-wrapper" id="sidebar-scroll">
           <nav className="app-sidebar-menu-wrapper nav flex-column sub-open">
             <div className="sidebar-left" id="sidebar-left"></div>
+
+            <h6 style={{ textAlign: "center", margin: "3rem 0 0" }}>
+              EMPLOYER PORTAL
+            </h6>
+
             <ul className="app-sidebar-main-menu">
               <li className="employer-profile-box">
                 <img src="/assets/images/logo/company-logo.png" />
@@ -49,7 +54,7 @@ const SideBar = () => {
                 </a>
               </li>
 
-              <li className="slide">
+              <li className="slide has-sub">
                 <a href="/job-management" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
@@ -63,7 +68,18 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Job Management </span>
+                  <i
+                    className="ri-arrow-down-s-fill side-menu-angle"
+                    onClick={(e) => e.preventDefault()}
+                  ></i>
                 </a>
+                <ul className="sidebar-menu child1">
+                  <li className="slide">
+                    <a href="job-offers" className="sidebar-menu-item">
+                      Job Offers
+                    </a>
+                  </li>
+                </ul>
               </li>
 
               <li className="slide has-sub">
