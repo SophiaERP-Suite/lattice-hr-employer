@@ -787,43 +787,76 @@ const JobOffers = () => {
                   </div>
                 </div>
 
-                <div>
-                  <h6>Rate Offered</h6>
-                  <div className="col-xl-4">
-                    <label htmlFor="rateMin" className="form-label">
-                      (Min)
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="rateMin"
-                      placeholder="Minimum Rate"
-                    />
-                  </div>
+                <div style={{ marginTop: "3rem" }}>
+                  <h6 style={{ marginBottom: "2rem" }}>Rate Offered</h6>
+                  <div className="row">
+                    <div className="col-xl-4">
+                      <label htmlFor="currency" className="form-label">
+                        Currency
+                      </label>
+                      <select className="form-control" id="currency">
+                        <option value="ngn">₦ NGN</option>
+                        <option value="usd">$ USD</option>
+                        <option value="eur">€ EUR</option>
+                        <option value="gbp">£ GBP</option>
+                      </select>
+                      <div className="row"></div>
+                    </div>
+                    <div className="col-xl-4">
+                      <label htmlFor="rateMin" className="form-label">
+                        (Min)
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="rateMin"
+                        placeholder="Minimum Rate"
+                      />
+                    </div>
 
-                  <div className="col-xl-4">
-                    <label htmlFor="rateMax" className="form-label">
-                      (Max)
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="rateMax"
-                      placeholder="Maximum Rate"
-                    />
+                    <div className="col-xl-4">
+                      <label htmlFor="rateMax" className="form-label">
+                        (Max)
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="rateMax"
+                        placeholder="Maximum Rate"
+                      />
+                    </div>
                   </div>
-                  <div className="col-xl-4">
-                    <label htmlFor="currency" className="form-label">
-                      Currency
-                    </label>
-                    <select className="form-control" id="currency">
-                      <option value="ngn">₦ NGN</option>
-                      <option value="usd">$ USD</option>
-                      <option value="eur">€ EUR</option>
-                      <option value="gbp">£ GBP</option>
-                    </select>
-                    <div className="row"></div>
-                  </div>
+                </div>
+
+                <div style={{ marginTop: "3rem" }}>
+                  <h6 style={{ marginBottom: "2rem" }}>
+                    Candidate Counter Rate:{" "}
+                    <b>&#8358;120,000 - &#8358;150,000</b>
+                  </h6>
+                </div>
+
+                <div
+                  style={{
+                    marginTop: "3rem",
+                    display: "flex",
+                    alignItems: "center",
+                    columnGap: "1.5rem",
+                  }}
+                >
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    data-bs-dismiss="modal"
+                  >
+                    Decline Counter Rate
+                  </button>
+                  <button type="button" className="btn btn-primary">
+                    Accept Counter Rate
+                  </button>
+
+                  <button type="button" className="btn btn-primary update-btn">
+                    Update Rate
+                  </button>
                 </div>
               </div>
               <div className="modal-footer">

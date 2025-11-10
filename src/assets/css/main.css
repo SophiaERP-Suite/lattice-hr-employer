@@ -18139,7 +18139,9 @@ select {
 
 }
 
-
+.update-btn {
+  background: green !important;
+}
 
 /*----------------------------------------*/
 /*  tagify css end */
