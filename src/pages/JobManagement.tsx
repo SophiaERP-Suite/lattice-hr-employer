@@ -42,10 +42,7 @@ const JobManagement = () => {
                         <option value="">Sort By:</option>
                         <option value="date_newest">Date: Newest First</option>
                         <option value="date_oldest">Date: Oldest First</option>
-                        <option value="status">Status</option>
-                        <option value="type">Job Type</option>
-                        <option value="location">Location</option>
-                        <option value="candidates">Number of Candidates</option>
+                        <option value="applicants">Number of Applicants</option>
                       </select>
                     </div>
                   </div>
@@ -53,6 +50,30 @@ const JobManagement = () => {
 
                 <div className="job-filter-container">
                   <h6>Filter by:</h6>
+
+                  <div>
+                    <select className="form-select">
+                      <option value="">All Status</option>
+                      <option value="open">Open</option>
+                      <option value="closed">Closed</option>
+                      <option value="expired">Expired</option>
+                    </select>
+
+                    <select className="form-select">
+                      <option value="">All Job Types</option>
+                      <option value="permanent">Permanent</option>
+                      <option value="temporary">Temporary</option>
+                      <option value="contract">Contract</option>
+                      <option value="one-off">One-off Shift</option>
+                    </select>
+
+                    <select className="form-select">
+                      <option value="">All Locations</option>
+                      <option value="lagos">Lagos</option>
+                      <option value="abuja">Abuja</option>
+                      <option value="port-harcourt">Port Harcourt</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="job-search-heading">
