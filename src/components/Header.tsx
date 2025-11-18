@@ -76,7 +76,7 @@ const Header = () => {
                 <i className="ri-search-line"></i>
               </button>
             </div>
-            <div className="app-header-link">
+            <div className="app-header-link support-link">
               <div className="dropdown">
                 <a
                   className="dropdown-toggle"
