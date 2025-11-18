@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const Induction = () => {
   return (
     <div className="app-content-area">
@@ -10,7 +12,7 @@ const Induction = () => {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item active" aria-current="page">
-                      <a href="/induction">
+                      <NavLink to="/induction">
                         Induction{" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -27,11 +29,11 @@ const Induction = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/dashboard">Home</a>
+                      <NavLink to="/dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>
@@ -132,9 +134,9 @@ const Induction = () => {
                 <div className="card-header justify-between">
                   <h4 className="d-flex-items gap-10">Induction Processes</h4>
                   <div className="d-flex flex-wrap gap-15">
-                    <a href="/create-induction" className="btn btn-primary">
+                    <NavLink to="/create-induction" className="btn btn-primary">
                       Create New Process
-                    </a>
+                    </NavLink>
 
                     <div className="dataTables-sorting-control ">
                       <select className="form-select sorting-dropdown">
@@ -224,12 +226,12 @@ const Induction = () => {
                           <td>Oct 21, 2025</td>
                           <td>
                             <div className="d-flex-items gap-5">
-                              <a
+                              <NavLink
+                                to="/view-induction"
                                 className="btn-icon btn-success-light"
-                                href="/view-induction"
                               >
                                 <i className="ri-eye-line"></i>
-                              </a>
+                              </NavLink>
                               <button
                                 className="btn-icon btn-info-light"
                                 type="button"

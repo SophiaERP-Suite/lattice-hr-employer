@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../Contexts";
+import { NavLink } from "react-router-dom";
 
 const Settings = () => {
   const { category, setCategory } = useContext(SettingsContext);
@@ -25,7 +26,7 @@ const Settings = () => {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item">
-                      <a href="/settings">
+                      <NavLink to="/settings">
                         Settings
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -42,11 +43,11 @@ const Settings = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/dashboard">Home</a>
+                      <NavLink to="/dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>

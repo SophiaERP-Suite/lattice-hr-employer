@@ -1,6 +1,7 @@
 import { WithContext as ReactTags, Tag } from "react-tag-input";
 import { useState } from "react";
 import BuildProcess from "../components/BuildProcess";
+import { NavLink } from "react-router-dom";
 
 const suggestions = [
   { id: "frontend_developer", text: "Frontend Developer", className: "" },
@@ -61,7 +62,7 @@ const CreateInductionProcess = () => {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item active" aria-current="page">
-                      <a href="/create-induction">
+                      <NavLink to="/create-induction">
                         New Induction{" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -78,15 +79,15 @@ const CreateInductionProcess = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/induction">Induction</a>
+                      <NavLink to="/induction">Induction</NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/dashboard">Home</a>
+                      <NavLink to="/dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>

@@ -1,9 +1,8 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { SettingsContext } from "../Contexts";
 
 const Header = () => {
-  const navigate = useNavigate();
   const { setCategory } = useContext(SettingsContext);
 
   const handleToggle = () => {
@@ -36,32 +35,32 @@ const Header = () => {
               </div>
               <div className="app-header-ls-logo">
                 {/* large screen logo */}
-                <a className="app-header-ls-dark-logo" href="/dashboard">
+                <NavLink className="app-header-ls-dark-logo" to="/dashboard">
                   <img
                     src="/Employer/assets/images/logo/latty.png"
                     alt="image"
                   />
-                </a>
-                <a className="app-header-ls-light-logo" href="/dashboard">
+                </NavLink>
+                <NavLink className="app-header-ls-light-logo" to="/dashboard">
                   <img
                     src="/Employer/assets/images/logo/latty.png"
                     alt="image"
                   />
-                </a>
+                </NavLink>
               </div>
               <div className="app-header-mobile-logo">
-                <a className="app-header-dark-logo" href="/dashboard">
+                <NavLink className="app-header-dark-logo" to="/dashboard">
                   <img
                     src="/Employer/assets/images/logo/latty.png"
                     alt="image"
                   />
-                </a>
-                <a className="app-header-light-logo" href="/dashboard">
+                </NavLink>
+                <NavLink className="app-header-light-logo" to="/dashboard">
                   <img
                     src="/Employer/assets/images/logo/latty.png"
                     alt="image"
                   />
-                </a>
+                </NavLink>
               </div>
             </div>
             <div className="app-header-search d-none d-lg-block">
@@ -270,9 +269,12 @@ const Header = () => {
                     </ul>
                   </li>
                   <li className="dropdown-notifications-btn">
-                    <a className="btn btn-primary w-100" href="/notifications">
+                    <NavLink
+                      className="btn btn-primary w-100"
+                      to="/notifications"
+                    >
                       View all notifications
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </div>
@@ -441,9 +443,9 @@ const Header = () => {
                     </ul>
                   </li>
                   <li className="dropdown-notifications-btn">
-                    <a className="btn btn-primary w-100" href="/messages">
+                    <NavLink className="btn btn-primary w-100" to="/messages">
                       View all messages
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </div>
@@ -473,36 +475,36 @@ const Header = () => {
                 </a>
                 <ul className="dropdown-menu">
                   <li className="bd-user-info-list">
-                    <a href="/profile">
+                    <NavLink to="/profile">
                       <i className="ri-user-line"></i>Profile
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="bd-user-info-list">
-                    <a
+                    <NavLink
+                      to="/settings"
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCategory("plans");
-                        navigate("/settings");
                       }}
                     >
                       <i className="ri-bank-card-line"></i>Plans & Billing
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="bd-user-info-list">
-                    <a
+                    <NavLink
+                      to="/settings"
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setCategory("account");
-                        navigate("/settings");
                       }}
                     >
                       <i className="ri-settings-2-line"></i>Profile Settings
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="bd-user-info-list">
-                    <a href="#">
+                    <NavLink to="#">
                       <i className="ri-logout-circle-line"></i>Logout
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </div>

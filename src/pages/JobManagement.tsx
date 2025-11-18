@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { WithContext as ReactTags, Tag } from "react-tag-input";
 
 const suggestions = [
@@ -57,7 +58,7 @@ const JobManagement = () => {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item active" aria-current="page">
-                      <a href="/job-management">
+                      <NavLink to="/job-management">
                         Job Management{" "}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -74,11 +75,11 @@ const JobManagement = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/dashboard">Home</a>
+                      <NavLink to="/dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>
@@ -292,12 +293,12 @@ const JobManagement = () => {
                           </td>
                           <td>
                             <div className="d-flex-items gap-5">
-                              <a
+                              <NavLink
+                                to="/job-details"
                                 className="btn-icon btn-success-light"
-                                href="/job-details"
                               >
                                 <i className="ri-eye-line"></i>
-                              </a>
+                              </NavLink>
                               <button
                                 className="btn-icon btn-info-light"
                                 type="button"

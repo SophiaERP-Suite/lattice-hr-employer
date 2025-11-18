@@ -1,23 +1,25 @@
+import { NavLink } from "react-router-dom";
+
 const SideBar = () => {
   return (
     <>
       <aside className="app-sidebar sticky" id="sidebar">
         {/* start app-sidebar-header */}
         <div className="app-sidebar-header">
-          <a href="/dashboard" className="desktop-logo">
+          <NavLink to="/dashboard" className="desktop-logo">
             <img
               src="/Employer/assets/images/logo/latty.png"
               className="app-logo"
               alt="image"
             />
-          </a>
-          <a href="/dashboard" className="desktop-dark">
+          </NavLink>
+          <NavLink to="/dashboard" className="desktop-dark">
             <img
               src="/Employer/assets/images/logo/latty.png"
               className="app-logo"
               alt="image"
             />
-          </a>
+          </NavLink>
         </div>
         {/* end app-sidebar-header */}
 
@@ -38,7 +40,7 @@ const SideBar = () => {
               </li>
 
               <li className="slide ">
-                <a href="/dashboard" className="sidebar-menu-item">
+                <NavLink to="/dashboard" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -51,11 +53,11 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Dashboard</span>
-                </a>
+                </NavLink>
               </li>
 
               <li className="slide has-sub">
-                <a href="/job-management" className="sidebar-menu-item">
+                <NavLink to="/job-management" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -72,18 +74,18 @@ const SideBar = () => {
                     className="ri-arrow-down-s-fill side-menu-angle"
                     onClick={(e) => e.preventDefault()}
                   ></i>
-                </a>
+                </NavLink>
                 <ul className="sidebar-menu child1">
                   <li className="slide">
-                    <a href="job-offers" className="sidebar-menu-item">
+                    <NavLink to="job-offers" className="sidebar-menu-item">
                       Job Offers
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </li>
 
               <li className="slide">
-                <a href="/induction" className="sidebar-menu-item">
+                <NavLink to="/induction" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -96,11 +98,11 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Induction</span>
-                </a>
+                </NavLink>
               </li>
 
               <li className="slide">
-                <a href="/onboarding" className="sidebar-menu-item">
+                <NavLink to="/onboarding" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -113,11 +115,11 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Onboarding</span>
-                </a>
+                </NavLink>
               </li>
 
               <li className="slide">
-                <a href="/compliance" className="sidebar-menu-item">
+                <NavLink to="/compliance" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -130,10 +132,13 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Compliance</span>
-                </a>
+                </NavLink>
               </li>
               <li className="slide">
-                <a href="/contract-management" className="sidebar-menu-item">
+                <NavLink
+                  to="/contract-management"
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -148,10 +153,13 @@ const SideBar = () => {
                   <span className="sidebar-menu-label">
                     Contract Management
                   </span>
-                </a>
+                </NavLink>
               </li>
               <li className="slide">
-                <a href="/work-and-attendance" className="sidebar-menu-item">
+                <NavLink
+                  to="/work-and-attendance"
+                  className="sidebar-menu-item"
+                >
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -164,11 +172,11 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Work & Attendance</span>
-                </a>
+                </NavLink>
               </li>
 
               <li className="slide">
-                <a href="/invoice-management" className="sidebar-menu-item">
+                <NavLink to="/invoice-management" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -181,10 +189,10 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Invoice Management</span>
-                </a>
+                </NavLink>
               </li>
               <li className="slide">
-                <a href="/payment" className="sidebar-menu-item">
+                <NavLink to="/payment" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -197,10 +205,10 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Payment</span>
-                </a>
+                </NavLink>
               </li>
               <li className="slide">
-                <a href="/notifications" className="sidebar-menu-item">
+                <NavLink to="/notifications" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -213,10 +221,10 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Notifications</span>
-                </a>
+                </NavLink>
               </li>
               <li className="slide">
-                <a href="/settings" className="sidebar-menu-item">
+                <NavLink to="/settings" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -229,7 +237,7 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Settings</span>
-                </a>
+                </NavLink>
               </li>
             </ul>
             <div className="sidebar-right" id="sidebar-right"></div>

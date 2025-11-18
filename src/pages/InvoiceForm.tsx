@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const InvoiceForm = () => {
   return (
     <div className="app-content-area">
@@ -10,7 +12,7 @@ const InvoiceForm = () => {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item active" aria-current="page">
-                      <a href="">
+                      <NavLink to="">
                         Invoice Form
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -27,11 +29,11 @@ const InvoiceForm = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/invoice-management">
+                      <NavLink to="/invoice-management">
                         Invoice Management
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -48,11 +50,11 @@ const InvoiceForm = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/dashboard">Home</a>
+                      <NavLink to="/dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>

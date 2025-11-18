@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const Compliance = () => {
   return (
     <div className="app-content-area">
@@ -10,7 +12,7 @@ const Compliance = () => {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item active" aria-current="page">
-                      <a href="/compliance">
+                      <NavLink to="/compliance">
                         Compliance
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -27,11 +29,11 @@ const Compliance = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/dashboard">Home</a>
+                      <NavLink to="/dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>

@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import BuildProcess from "../components/BuildProcess";
 
 const ViewInductionProcess = () => {
@@ -12,7 +13,7 @@ const ViewInductionProcess = () => {
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item active" aria-current="page">
-                      <a href="/view-induction">
+                      <NavLink to="/view-induction">
                         Induction Details
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -29,15 +30,15 @@ const ViewInductionProcess = () => {
                         >
                           <path d="m9 18 6-6-6-6"></path>
                         </svg>
-                      </a>
+                      </NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/induction">Induction</a>
+                      <NavLink to="/induction">Induction</NavLink>
                     </li>
 
                     <li className="breadcrumb-item">
-                      <a href="/dashboard">Home</a>
+                      <NavLink to="/dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>
