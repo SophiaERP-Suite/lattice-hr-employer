@@ -12544,6 +12544,8 @@ only screen and (min-width: 576px) and (max-width: 767px),
   font-weight: 500;
   position: relative;
   color: var(--color-heading);
+  display: flex;
+  justify-content: center;
 }
 
 @media (max-width: 575px) {
@@ -18141,6 +18143,51 @@ select {
 
 .update-btn {
   background: green !important;
+}
+
+.onboarding-tasks-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.onboarding-tasks-list li {
+  display: flex;
+  align-items: center;
+  column-gap: 0.7rem;
+  font-size: 16px;
+}
+
+.onboarding-tasks-list li i {
+  color: green;
+}
+
+.onboarding-tasks-list li.in-progress i {
+  color: gray;
+}
+
+.notifications-list {
+  height: auto !important;
+}
+
+.show-details {
+  display: block !important;
+}
+
+.chat-tabs-list {
+  display: grid;
+  grid-template-columns: repeat(3, 33.33%)
+}
+
+.chat-tabs-list li {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-tabs-list li button {
+  width: 100%;
 }
 
 /*----------------------------------------*/

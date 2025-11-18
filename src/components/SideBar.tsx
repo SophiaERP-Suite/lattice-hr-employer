@@ -82,11 +82,8 @@ const SideBar = () => {
                 </ul>
               </li>
 
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+              <li className="slide">
+                <a href="/induction" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -99,53 +96,28 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Induction</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a href="crm-contacts.html" className="sidebar-menu-item">
-                      Contacts
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="crm-companies.html" className="sidebar-menu-item">
-                      Companies
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="crm-deals.html" className="sidebar-menu-item">
-                      Deals
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="crm-deals-details.html"
-                      className="sidebar-menu-item"
-                    >
-                      Deals Overview
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a href="crm-leads.html" className="sidebar-menu-item">
-                      Leads
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      href="crm-leads-details.html"
-                      className="sidebar-menu-item"
-                    >
-                      Leads Overview
-                    </a>
-                  </li>
-                </ul>
               </li>
 
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+              <li className="slide">
+                <a href="/onboarding" className="sidebar-menu-item">
+                  <div className="side-menu-icon">
+                    <i className="">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path d="M3 3C2.44772 3 2 3.44772 2 4V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V4C22 3.44772 21.5523 3 21 3H3ZM4 19V5H20V19H4ZM9 7H7V15H9V7ZM15 7H17V13H15V7ZM13 7H11V17H13V7Z"></path>
+                      </svg>
+                    </i>
+                  </div>
+                  <span className="sidebar-menu-label">Onboarding</span>
+                </a>
+              </li>
+
+              <li className="slide">
+                <a href="/compliance" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -158,157 +130,10 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Compliance</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-product-list.html"
-                    >
-                      Products List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-product-grid.html"
-                    >
-                      Product Grid
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-add-product.html"
-                    >
-                      Add Products
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-edit-product.html"
-                    >
-                      Edit Products
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-product-details.html"
-                    >
-                      Product Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-order-list.html"
-                    >
-                      Order List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-order-details.html"
-                    >
-                      Order Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="ecommerce-cart.html">
-                      Shop Cart
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-checkout.html"
-                    >
-                      Checkout
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-wishlist.html"
-                    >
-                      Shopping Wishlist
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-payment-methods.html"
-                    >
-                      Payment Methods
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-refund-requests.html"
-                    >
-                      Refund Requests
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-sellers.html"
-                    >
-                      Sellers
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-seller-details.html"
-                    >
-                      Seller Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-become-seller.html"
-                    >
-                      Become A Seller
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-customer-list.html"
-                    >
-                      Customers List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-add-customer.html"
-                    >
-                      Add Customer
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-manage-reviews.html"
-                    >
-                      Customer Reviews
-                    </a>
-                  </li>
-                </ul>
               </li>
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+              <li className="slide">
+                <a href="/contract-management" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -323,48 +148,10 @@ const SideBar = () => {
                   <span className="sidebar-menu-label">
                     Contract Management
                   </span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-customer-details.html"
-                    >
-                      Customer Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-customer-billing.html"
-                    >
-                      Cards & Address
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-customer-tracker.html"
-                    >
-                      Track Order
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="ecommerce-customer-setting.html"
-                    >
-                      Setting
-                    </a>
-                  </li>
-                </ul>
               </li>
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+              <li className="slide">
+                <a href="/work-and-attendance" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -377,88 +164,11 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Work & Attendance</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="apps-job-list.html">
-                      Job List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="apps-job-details.html"
-                    >
-                      Job Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="apps-job-applicants-lists.html"
-                    >
-                      Applicants List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="apps-job-applicants-details.html"
-                    >
-                      Applicants Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="apps-job-categories.html"
-                    >
-                      Job Categories
-                    </a>
-                  </li>
-                </ul>
               </li>
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
-                  <div className="side-menu-icon">
-                    <i className="">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"></path>
-                      </svg>
-                    </i>
-                  </div>
-                  <span className="sidebar-menu-label">Timesheet</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
-                </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="companies.html">
-                      Company
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="company-details.html"
-                    >
-                      Company Details
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+
+              <li className="slide">
+                <a href="/invoice-management" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -470,35 +180,11 @@ const SideBar = () => {
                       </svg>
                     </i>
                   </div>
-                  <span className="sidebar-menu-label">Invoice & Billing</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
+                  <span className="sidebar-menu-label">Invoice Management</span>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="project.html">
-                      Projects
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="project-details.html"
-                    >
-                      Projects Details
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="project-create.html">
-                      Create Projects
-                    </a>
-                  </li>
-                </ul>
               </li>
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+              <li className="slide">
+                <a href="/payment" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -511,45 +197,10 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Payment</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="payroll.html">
-                      Payroll List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="payroll-payslip.html"
-                    >
-                      Payslip
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="payroll-payslip-create.html"
-                    >
-                      Payslip Create
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="payroll-payslip-edit.html"
-                    >
-                      Payslip Edit
-                    </a>
-                  </li>
-                </ul>
               </li>
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+              <li className="slide">
+                <a href="/notifications" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -562,39 +213,10 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Notifications</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="invoice.html">
-                      Invoice List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="invoice-preview.html"
-                    >
-                      Invoice
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="invoice-create.html">
-                      Invoice Create
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="invoice-edit.html">
-                      Invoice Edit
-                    </a>
-                  </li>
-                </ul>
               </li>
-              <li className="slide has-sub">
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  className="sidebar-menu-item"
-                >
+              <li className="slide">
+                <a href="/settings" className="sidebar-menu-item">
                   <div className="side-menu-icon">
                     <i className="">
                       <svg
@@ -607,33 +229,7 @@ const SideBar = () => {
                     </i>
                   </div>
                   <span className="sidebar-menu-label">Settings</span>
-                  <i className="ri-arrow-down-s-fill side-menu-angle"></i>
                 </a>
-                <ul className="sidebar-menu child1">
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="invoice.html">
-                      Invoice List
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a
-                      className="sidebar-menu-item"
-                      href="invoice-preview.html"
-                    >
-                      Invoice
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="invoice-create.html">
-                      Invoice Create
-                    </a>
-                  </li>
-                  <li className="slide">
-                    <a className="sidebar-menu-item" href="invoice-edit.html">
-                      Invoice Edit
-                    </a>
-                  </li>
-                </ul>
               </li>
             </ul>
             <div className="sidebar-right" id="sidebar-right"></div>

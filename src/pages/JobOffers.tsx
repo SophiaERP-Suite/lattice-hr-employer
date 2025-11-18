@@ -1,3 +1,5 @@
+import ContractForm from "../components/ContractForm";
+
 const JobOffers = () => {
   return (
     <div className="app-content-area">
@@ -263,7 +265,7 @@ const JobOffers = () => {
                                 data-bs-placement="top"
                                 data-bs-title="Edit Offer"
                                 data-bs-toggle="modal"
-                                data-bs-target="#addNewEmployee"
+                                data-bs-target="#editOffer"
                               >
                                 <i className="ri-eye-line"></i>
                               </a>
@@ -272,9 +274,10 @@ const JobOffers = () => {
                               <a
                                 className="btn-icon btn-success-light"
                                 href="javascript:void(0);"
-                                data-bs-toggle="tooltip"
                                 data-bs-placement="top"
+                                data-bs-toggle="modal"
                                 data-bs-title="Send Contract"
+                                data-bs-target="#addNewEmployee"
                               >
                                 <i className="ri-file-text-line"></i>
                               </a>
@@ -616,7 +619,7 @@ const JobOffers = () => {
         {/* start create job modal */}
         <div
           className="modal fade"
-          id="addNewEmployee"
+          id="editOffer"
           tabIndex={-1}
           aria-labelledby="addNewEmployeeLabel"
           aria-hidden="true"
@@ -875,6 +878,10 @@ const JobOffers = () => {
           </div>
         </div>
         {/* end create Employee model */}
+
+        {/* start edit contract modal */}
+        <ContractForm type="create" />
+        {/* end edit contract model */}
       </div>
     </div>
   );

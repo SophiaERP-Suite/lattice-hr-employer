@@ -2,7 +2,8 @@ import { Outlet } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { SettingsContext } from "../Contexts";
 
 const templateScripts = [
   "/assets/js/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js",
@@ -26,6 +27,8 @@ const templateScripts = [
 ];
 
 const EmployerLayout = () => {
+  const [category, setCategory] = useState<string>("account");
+
   useEffect(() => {
     const loadScripts = async () => {
       await Promise.allSettled(
@@ -48,18 +51,20 @@ const EmployerLayout = () => {
 
   return (
     <div className="page">
-      {/* SideBar */}
-      <SideBar />
+      <SettingsContext.Provider value={{ category, setCategory }}>
+        {/* SideBar */}
+        <SideBar />
 
-      {/* Header */}
-      <Header />
+        {/* Header */}
+        <Header />
 
-      {/* Outlet */}
+        {/* Outlet */}
 
-      <Outlet />
+        <Outlet />
 
-      {/* Footer */}
-      <Footer />
+        {/* Footer */}
+        <Footer />
+      </SettingsContext.Provider>
     </div>
   );
 };

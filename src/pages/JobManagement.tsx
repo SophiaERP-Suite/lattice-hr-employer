@@ -1224,9 +1224,9 @@ const JobManagement = () => {
               </div>
             </div>
           </div>
-          {/* end create Employee model */}
+          {/* end create job model */}
 
-          {/* start edit Employee model */}
+          {/* start edit job model */}
           <div
             className="modal fade"
             id="employeeEdit"
@@ -1579,7 +1579,7 @@ const JobManagement = () => {
               </div>
             </div>
           </div>
-          {/* end edit Employee model */}
+          {/* end edit job model */}
         </div>
       </div>
     </div>

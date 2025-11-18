@@ -1279,7 +1279,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="col-xxl-4 col-xl-12">
+            <div className="col-12">
               <div className="card">
                 <div className="card-header justify-between">
                   <h4 className="">Notifications</h4>
@@ -1451,10 +1451,7 @@ const Dashboard = () => {
                   </div>
 
                   <div className="announcement-view-btn">
-                    <a
-                      href="javascript:void(0);"
-                      className="btn btn-primary w-100"
-                    >
+                    <a href="/notifications" className="btn btn-primary w-100">
                       View All Notifications
                     </a>
                   </div>

@@ -1,4 +1,11 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { SettingsContext } from "../Contexts";
+
 const Header = () => {
+  const navigate = useNavigate();
+  const { setCategory } = useContext(SettingsContext);
+
   const handleToggle = () => {
     // @ts-expect-error/jquery
     if (window.toggleSideBar) {
@@ -251,10 +258,7 @@ const Header = () => {
                     </ul>
                   </li>
                   <li className="dropdown-notifications-btn">
-                    <a
-                      className="btn btn-primary w-100"
-                      href="javascript:void(0);"
-                    >
+                    <a className="btn btn-primary w-100" href="/notifications">
                       View all notifications
                     </a>
                   </li>
@@ -425,10 +429,7 @@ const Header = () => {
                     </ul>
                   </li>
                   <li className="dropdown-notifications-btn">
-                    <a
-                      className="btn btn-primary w-100"
-                      href="javascript:void(0);"
-                    >
+                    <a className="btn btn-primary w-100" href="/messages">
                       View all messages
                     </a>
                   </li>
@@ -460,22 +461,34 @@ const Header = () => {
                 </a>
                 <ul className="dropdown-menu">
                   <li className="bd-user-info-list">
-                    <a href="app-user-account.html">
+                    <a href="/profile">
                       <i className="ri-user-line"></i>Profile
                     </a>
                   </li>
                   <li className="bd-user-info-list">
-                    <a href="app-user-billing.html">
+                    <a
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setCategory("plans");
+                        navigate("/settings");
+                      }}
+                    >
                       <i className="ri-bank-card-line"></i>Plans & Billing
                     </a>
                   </li>
                   <li className="bd-user-info-list">
-                    <a href="app-user-security.html">
+                    <a
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setCategory("account");
+                        navigate("/settings");
+                      }}
+                    >
                       <i className="ri-settings-2-line"></i>Profile Settings
                     </a>
                   </li>
                   <li className="bd-user-info-list">
-                    <a href="auth-signin-basic.html">
+                    <a href="#">
                       <i className="ri-logout-circle-line"></i>Logout
                     </a>
                   </li>
