@@ -6,14 +6,14 @@ const SideBar = () => {
         <div className="app-sidebar-header">
           <a href="/dashboard" className="desktop-logo">
             <img
-              src="/assets/images/logo/latty.png"
+              src="/Employer/assets/images/logo/latty.png"
               className="app-logo"
               alt="image"
             />
           </a>
           <a href="/dashboard" className="desktop-dark">
             <img
-              src="/assets/images/logo/latty.png"
+              src="/Employer/assets/images/logo/latty.png"
               className="app-logo"
               alt="image"
             />
@@ -32,7 +32,7 @@ const SideBar = () => {
 
             <ul className="app-sidebar-main-menu">
               <li className="employer-profile-box">
-                <img src="/assets/images/logo/company-logo.png" />
+                <img src="/Employer/assets/images/logo/company-logo.png" />
 
                 <h6>Oxford Technologies</h6>
               </li>

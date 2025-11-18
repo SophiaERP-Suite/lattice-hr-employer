@@ -14,8 +14,8 @@
   /* IE9*/
   src: url('/assets/fonts/remixicon9711.html?t=1734404658139#iefix') format('embedded-opentype'),
     /* IE6-IE8 */
-    url("/assets/fonts/remixicon9711-2.html?t=1734404658139") format("woff2"),
-    url("/assets/fonts/remixicon9711-3.html?t=1734404658139") format("woff"),
+    url("/Employer/assets/fonts/remixicon9711-2.html?t=1734404658139") format("woff2"),
+    url("/Employer/assets/fonts/remixicon9711-3.html?t=1734404658139") format("woff"),
     url('/assets/fonts/remixicon9711-4.html?t=1734404658139') format('truetype');
   /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
   font-display: swap;

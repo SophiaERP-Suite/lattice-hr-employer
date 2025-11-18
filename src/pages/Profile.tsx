@@ -56,7 +56,7 @@ const Profile = () => {
                       <div className="avatar avatar-big radius-100">
                         <img
                           className="radius-100"
-                          src="/assets/images/logo/company-logo.png"
+                          src="/Employer/assets/images/logo/company-logo.png"
                           alt="image not found"
                         />
                       </div>
@@ -276,7 +276,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-001.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-001.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -328,7 +328,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-002.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-002.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -372,7 +372,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-003.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-003.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -407,7 +407,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-004.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-004.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -442,7 +442,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-005.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-005.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -477,7 +477,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-006.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-006.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -512,7 +512,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-007.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-007.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -547,7 +547,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-008.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-008.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -582,7 +582,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-009.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-009.webp"
                                         alt="image not found"
                                       />
                                     </div>
@@ -617,7 +617,7 @@ const Profile = () => {
                                     <div className="avatar avatar-xs radius-100">
                                       <img
                                         className="radius-100"
-                                        src="/assets/images/avatar/avatar-thumb-010.webp"
+                                        src="/Employer/assets/images/avatar/avatar-thumb-010.webp"
                                         alt="image not found"
                                       />
                                     </div>

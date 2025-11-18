@@ -233,7 +233,7 @@ const JobOffers = () => {
                             <div className="d-flex-items gap-10">
                               <div className="avatar radius-100">
                                 <img
-                                  src="/assets/images/avatar/avatar-thumb-002.webp"
+                                  src="/Employer/assets/images/avatar/avatar-thumb-002.webp"
                                   alt="image not found"
                                   className="radius-100"
                                 />
@@ -301,7 +301,7 @@ const JobOffers = () => {
                             <div className="d-flex-items gap-10">
                               <div className="avatar radius-100">
                                 <img
-                                  src="/assets/images/avatar/avatar-thumb-003.webp"
+                                  src="/Employer/assets/images/avatar/avatar-thumb-003.webp"
                                   alt="image not found"
                                   className="radius-100"
                                 />
@@ -362,7 +362,7 @@ const JobOffers = () => {
                             <div className="d-flex-items gap-10">
                               <div className="avatar radius-100">
                                 <img
-                                  src="/assets/images/avatar/avatar-thumb-004.webp"
+                                  src="/Employer/assets/images/avatar/avatar-thumb-004.webp"
                                   alt="image not found"
                                   className="radius-100"
                                 />
@@ -423,7 +423,7 @@ const JobOffers = () => {
                             <div className="d-flex-items gap-10">
                               <div className="avatar radius-100">
                                 <img
-                                  src="/assets/images/avatar/avatar-thumb-005.webp"
+                                  src="/Employer/assets/images/avatar/avatar-thumb-005.webp"
                                   alt="image not found"
                                   className="radius-100"
                                 />
@@ -484,7 +484,7 @@ const JobOffers = () => {
                             <div className="d-flex-items gap-10">
                               <div className="avatar radius-100">
                                 <img
-                                  src="/assets/images/avatar/avatar-thumb-006.webp"
+                                  src="/Employer/assets/images/avatar/avatar-thumb-006.webp"
                                   alt="image not found"
                                   className="radius-100"
                                 />
@@ -643,7 +643,7 @@ const JobOffers = () => {
                     <div className="text-center">
                       <div className="avatar avatar-xxl radius-100">
                         <img
-                          src="/assets/images/avatar/avatar-thumb-dummy.png"
+                          src="/Employer/assets/images/avatar/avatar-thumb-dummy.png"
                           alt="image not found"
                           id="profileImage"
                           className="radius-100"

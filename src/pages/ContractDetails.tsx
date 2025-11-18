@@ -69,7 +69,7 @@ const ContractDetails = () => {
                     <div className="d-flex align-items-center">
                       <div className="avatar avatar-big">
                         <img
-                          src="/assets/images/company/company-thumb-001.png"
+                          src="/Employer/assets/images/company/company-thumb-001.png"
                           alt="Company Logo"
                           className="radius-50"
                         />
@@ -220,7 +220,7 @@ const ContractDetails = () => {
                   <div className="text-center">
                     <div className="avatar avatar-xxl radius-100">
                       <img
-                        src="/assets/images/avatar/avatar-thumb-001.webp"
+                        src="/Employer/assets/images/avatar/avatar-thumb-001.webp"
                         alt="image not found"
                         id="profileImage"
                         className="radius-100"

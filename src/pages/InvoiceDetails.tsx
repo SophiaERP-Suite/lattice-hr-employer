@@ -75,7 +75,7 @@ const InvoiceDetails = () => {
                               <div className="invoice-logo mb-15">
                                 <img
                                   className="light-logo"
-                                  src="/assets/images/logo/company-logo.png"
+                                  src="/Employer/assets/images/logo/company-logo.png"
                                   alt="Company Logo"
                                   style={{
                                     borderRadius: "8px",
@@ -85,7 +85,7 @@ const InvoiceDetails = () => {
                                 />
                                 <img
                                   className="dark-logo"
-                                  src="/assets/images/logo/company-logo.png"
+                                  src="/Employer/assets/images/logo/company-logo.png"
                                   alt="Company Logo"
                                   style={{
                                     borderRadius: "8px",

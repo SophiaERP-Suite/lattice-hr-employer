@@ -898,7 +898,7 @@ const JobManagement = () => {
                       <div className="text-center">
                         <div className="avatar avatar-xxl radius-100">
                           <img
-                            src="/assets/images/avatar/avatar-thumb-dummy.png"
+                            src="/Employer/assets/images/avatar/avatar-thumb-dummy.png"
                             alt="image not found"
                             id="profileImage"
                             className="radius-100"
@@ -1253,7 +1253,7 @@ const JobManagement = () => {
                       <div className="text-center">
                         <div className="avatar avatar-xxl radius-100">
                           <img
-                            src="/assets/images/avatar/avatar-thumb-dummy.png"
+                            src="/Employer/assets/images/avatar/avatar-thumb-dummy.png"
                             alt="image not found"
                             id="profileImage"
                             className="radius-100"

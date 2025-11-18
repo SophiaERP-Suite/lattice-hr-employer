@@ -129,7 +129,7 @@ const Settings = () => {
                           <div className="text-center">
                             <div className="avatar avatar-xxl radius-100">
                               <img
-                                src="/assets/images/avatar/avatar-thumb-dummy.png"
+                                src="/Employer/assets/images/avatar/avatar-thumb-dummy.png"
                                 alt="image not found"
                                 id="profileImage"
                                 className="radius-100"
@@ -470,7 +470,7 @@ const Settings = () => {
                       <div className="d-flex-items gap-10">
                         <div className="payment-icon">
                           <img
-                            src="/assets/images/payment/paypal.png"
+                            src="/Employer/assets/images/payment/paypal.png"
                             alt="image not found"
                           />
                         </div>
@@ -545,7 +545,7 @@ const Settings = () => {
                       <div className="d-flex-items flex-wrap gap-10">
                         <div className="payment-icon">
                           <img
-                            src="/assets/images/payment/visa.png"
+                            src="/Employer/assets/images/payment/visa.png"
                             alt="image not found"
                           />
                         </div>
@@ -618,7 +618,7 @@ const Settings = () => {
                       <div className="d-flex-items flex-wrap gap-10">
                         <div className="payment-icon">
                           <img
-                            src="/assets/images/payment/mastercard.png"
+                            src="/Employer/assets/images/payment/mastercard.png"
                             alt="image not found"
                           />
                         </div>
@@ -691,7 +691,7 @@ const Settings = () => {
                       <div className="d-flex-items flex-wrap gap-10">
                         <div className="payment-icon">
                           <img
-                            src="/assets/images/payment/amex.png"
+                            src="/Employer/assets/images/payment/amex.png"
                             alt="image not found"
                           />
                         </div>
