@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import { useEffect, useState } from "react";
 import { SettingsContext } from "../Contexts";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const templateScripts = [
   "/Employer/assets/js/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js",
