@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import latty from "../assets/images/logo/latty.png";
+import companyLogo from "../assets/images/logo/company-logo.png";
 
 const SideBar = () => {
   return (
@@ -8,14 +10,14 @@ const SideBar = () => {
         <div className="app-sidebar-header">
           <NavLink to="/dashboard" className="desktop-logo">
             <img
-              src="/Employer/assets/images/logo/latty.png"
+              src={latty}
               className="app-logo"
               alt="image"
             />
           </NavLink>
           <NavLink to="/dashboard" className="desktop-dark">
             <img
-              src="/Employer/assets/images/logo/latty.png"
+              src={latty}
               className="app-logo"
               alt="image"
             />
@@ -34,7 +36,7 @@ const SideBar = () => {
 
             <ul className="app-sidebar-main-menu">
               <li className="employer-profile-box">
-                <img src="/Employer/assets/images/logo/company-logo.png" />
+                <img src={companyLogo} />
 
                 <h6>Oxford Technologies</h6>
               </li>

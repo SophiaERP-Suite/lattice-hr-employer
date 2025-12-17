@@ -1,6 +1,12 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { SettingsContext } from "../Contexts";
+import latty from "../assets/images/logo/latty.png"
+import avatarThumb1 from "../assets/images/avatar/avatar-thumb-001.webp"
+import avatarThumb2 from "../assets/images/avatar/avatar-thumb-002.webp"
+import avatarThumb3 from "../assets/images/avatar/avatar-thumb-003.webp"
+import avatarThumb4 from "../assets/images/avatar/avatar-thumb-004.webp"
+import avatarThumb5 from "../assets/images/avatar/avatar-thumb-005.webp"
 
 const Header = () => {
   const { setCategory } = useContext(SettingsContext);
@@ -37,13 +43,13 @@ const Header = () => {
                 {/* large screen logo */}
                 <NavLink className="app-header-ls-dark-logo" to="/dashboard">
                   <img
-                    src="/Employer/assets/images/logo/latty.png"
+                    src={latty}
                     alt="image"
                   />
                 </NavLink>
                 <NavLink className="app-header-ls-light-logo" to="/dashboard">
                   <img
-                    src="/Employer/assets/images/logo/latty.png"
+                    src={latty}
                     alt="image"
                   />
                 </NavLink>
@@ -51,13 +57,13 @@ const Header = () => {
               <div className="app-header-mobile-logo">
                 <NavLink className="app-header-dark-logo" to="/dashboard">
                   <img
-                    src="/Employer/assets/images/logo/latty.png"
+                    src={latty}
                     alt="image"
                   />
                 </NavLink>
                 <NavLink className="app-header-light-logo" to="/dashboard">
                   <img
-                    src="/Employer/assets/images/logo/latty.png"
+                    src={latty}
                     alt="image"
                   />
                 </NavLink>
@@ -130,7 +136,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-001.webp"
+                            src={avatarThumb1}
                             alt="image not found"
                           />
                         </div>
@@ -160,7 +166,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-002.webp"
+                            src={avatarThumb2}
                             alt="image not found"
                           />
                         </div>
@@ -192,7 +198,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-003.webp"
+                            src={avatarThumb3}
                             alt="image not found"
                           />
                         </div>
@@ -218,7 +224,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-004.webp"
+                            src={avatarThumb4}
                             alt="image not found"
                           />
                         </div>
@@ -244,7 +250,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-005.webp"
+                            src={avatarThumb5}
                             alt="image not found"
                           />
                         </div>
@@ -304,7 +310,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-001.webp"
+                            src={avatarThumb1}
                             alt="image not found"
                           />
                         </div>
@@ -334,7 +340,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-002.webp"
+                            src={avatarThumb2}
                             alt="image not found"
                           />
                         </div>
@@ -366,7 +372,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-003.webp"
+                            src={avatarThumb3}
                             alt="image not found"
                           />
                         </div>
@@ -392,7 +398,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-004.webp"
+                            src={avatarThumb4}
                             alt="image not found"
                           />
                         </div>
@@ -418,7 +424,7 @@ const Header = () => {
                         <div className="avatar">
                           <img
                             className="radius-100"
-                            src="/Employer/assets/images/avatar/avatar-thumb-005.webp"
+                            src={avatarThumb5}
                             alt="image not found"
                           />
                         </div>
@@ -463,7 +469,7 @@ const Header = () => {
                   <div className="author">
                     <div className="author-thumb">
                       <img
-                        src="/Employer/assets/images/avatar/avatar-thumb-001.webp"
+                        src={avatarThumb1}
                         alt="user"
                       />
                     </div>
