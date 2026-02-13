@@ -21,6 +21,9 @@ import Notifications from "../pages/Notifications";
 import Settings from "../pages/Settings";
 import Profile from "../pages/Profile";
 import Messages from "../pages/Messages";
+import JobForm from "../pages/JobForm";
+import AuthBridge from "../utils/Auth/AuthBridge";
+import InterviewQuestionsPageLocal from "../pages/InterviewQuestionsForm";
 
 const AppRoutes = () => {
   return (
@@ -29,7 +32,11 @@ const AppRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="job-management" element={<JobManagement />} />
-        <Route path="job-details" element={<JobDetails />} />
+        <Route path="auth-bridge" element={<AuthBridge />} />
+        <Route path="jobDetails/:id" element={<JobDetails />} />
+        <Route path="jobForm" element={<JobForm />} />
+        <Route path="interview/:id" element={<InterviewQuestionsPageLocal />} />
+        <Route path="jobEdit/:id" element={<JobForm />} />
         <Route path="job-offers" element={<JobOffers />} />
         <Route path="induction" element={<Induction />} />{" "}
         <Route path="create-induction" element={<CreateInductionProcess />} />

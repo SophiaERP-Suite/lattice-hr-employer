@@ -9,18 +9,10 @@ const SideBar = () => {
         {/* start app-sidebar-header */}
         <div className="app-sidebar-header">
           <NavLink to="/dashboard" className="desktop-logo">
-            <img
-              src={latty}
-              className="app-logo"
-              alt="image"
-            />
+            <img src={latty} className="app-logo" alt="image" />
           </NavLink>
           <NavLink to="/dashboard" className="desktop-dark">
-            <img
-              src={latty}
-              className="app-logo"
-              alt="image"
-            />
+            <img src={latty} className="app-logo" alt="image" />
           </NavLink>
         </div>
         {/* end app-sidebar-header */}
@@ -79,8 +71,8 @@ const SideBar = () => {
                 </NavLink>
                 <ul className="sidebar-menu child1">
                   <li className="slide">
-                    <NavLink to="job-offers" className="sidebar-menu-item">
-                      Job Offers
+                    <NavLink to="job-management" className="sidebar-menu-item">
+                      My Jobs
                     </NavLink>
                   </li>
                 </ul>
