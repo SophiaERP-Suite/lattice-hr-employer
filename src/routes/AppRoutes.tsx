@@ -24,6 +24,8 @@ import Messages from "../pages/Messages";
 import JobForm from "../pages/JobForm";
 import AuthBridge from "../utils/Auth/AuthBridge";
 import InterviewQuestionsPageLocal from "../pages/InterviewQuestionsForm";
+import { RequireLogin } from "../utils/Auth/RequireLogin";
+import RequestDetails from "../pages/RequestDetails";
 
 const AppRoutes = () => {
   return (
@@ -43,7 +45,9 @@ const AppRoutes = () => {
         <Route path="view-induction" element={<ViewInductionProcess />} />{" "}
         <Route path="onboarding" element={<Onboarding />} />
         <Route path="compliance" element={<Compliance />} />
-        <Route path="contract-management" element={<ContractManagement />} />
+        <Route path="contract-management" element={<RequireLogin><ContractManagement /></RequireLogin>} />
+        <Route path="contract-management/:id" element={<RequireLogin><ContractDetails /></RequireLogin>} />
+        <Route path="contract-management/Requests/:id" element={<RequireLogin><RequestDetails /></RequireLogin>} />
         <Route path="contract-details" element={<ContractDetails />} />
         <Route path="work-and-attendance" element={<WorkAttendance />} />
         <Route path="invoice-management" element={<InvoiceManagement />} />

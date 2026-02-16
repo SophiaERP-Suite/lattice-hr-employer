@@ -4,11 +4,9 @@ export interface User {
   lastName: string;
   email: string;
   phone: string;
-  userRole: string;
-  organisationId: number;
-  organisationName: string;
-  organisationType: string;
-  roleScope: number;
+  userType: string;
+  employerId: number;
+  businessName: string;
 }
 
 export interface AuthData {
