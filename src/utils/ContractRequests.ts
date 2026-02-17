@@ -106,3 +106,17 @@ export const fetchAllContracts = async (filterData: object) => {
   })
   return response
 }
+
+export const uploadContractSignature = async (contractId: number, data: FormData) => {
+  const token = localStorage.getItem('accessToken');
+  const url = `${BaseURL}/contracts/${contractId}/signature`;
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+    body: data
+  })
+  return response
+}
+

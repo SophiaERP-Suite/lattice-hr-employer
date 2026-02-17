@@ -1,7 +1,9 @@
 import {
   ArrowDownFromLine,
+  CheckCheck,
   ChevronRight,
   PenLine,
+  X,
 } from "lucide-react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -9,8 +11,11 @@ import { NavLink, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Hashids from "hashids";
 import { toast, ToastContainer } from 'react-toastify';
-import { getContractById } from "../utils/ContractRequests";
+import { getContractById, uploadContractSignature } from "../utils/ContractRequests";
 import HtmlRenderer from "../layouts/HTMLRenderer";
+import { useForm } from "react-hook-form";
+import Modal from 'react-modal';
+import { handleCreateEmployee } from "../utils/EmployeeResponse";
 
 interface ResponsibilitiesData {
     typeId: number;
@@ -33,11 +38,17 @@ interface ContractData {
     responsibilities: ResponsibilitiesData[];
 }
 
+interface ContractSignatureFormData {
+    Signature: string;
+}
+
 export default function ContractDetails() {
     const [contractData, setContractData] = useState<ContractData | null>(null);
     const hashIds = new Hashids('LatticeHumanResourceEncode', 10);
     const { id } = useParams();
     const hashedId = id ? Number(hashIds.decode(id)[0]) : 0;
+    const [addModalState, setAddModalState] = useState(false);
+    const { reset, formState: { errors, isValid }, register, handleSubmit } = useForm<ContractSignatureFormData>();
 
     useEffect(() => {
         getContractById(hashedId)
@@ -122,11 +133,104 @@ export default function ContractDetails() {
         }
     }
 
+    const refetchContract = async () => {
+        const res = await getContractById(hashedId);
+        if (res.status === 200 || res.status === 201) {
+            const data = await res.json();
+            setContractData(data.data);
+        } else {
+            const data = await res.text()
+            console.log(JSON.parse(data));
+        }
+    }
+
+    const submitSignature = async (data: ContractSignatureFormData) => {
+        if (isValid && contractData) {
+            const loader = document.getElementById('query-loader-1');
+            const text = document.getElementById('query-text-1');
+            if (loader) {
+                loader.style.display = 'flex';
+            }
+            if (text) {
+                text.style.display = 'none';
+            }
+            const formData = new FormData();
+            formData.append("Signature", data.Signature[0]);
+            const res = await uploadContractSignature(hashedId, formData);
+            handleCreateEmployee(res, loader, text, { toast }, reset)
+            .finally(() => {
+                refetchContract();
+                setAddModalState(false);
+            })
+        }
+    }
+
     return (
       <div className="app-content-area">
         <div className="app-content-wrap">
           <div className="container-fluid">
             <ToastContainer />
+            <Modal isOpen={addModalState} onRequestClose={() => { setAddModalState(false); }}
+                style={{
+                content: {
+                width: 'fit-content',
+                height: 'fit-content',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                backgroundColor: 'rgb(255 255 255)',
+                borderRadius: '0.5rem',
+                boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+                zIndex: '10'
+                },
+                overlay: {
+                backgroundColor: 'rgba(255, 255, 255, 0.7)'
+                }
+            }}
+        >
+            
+            <div className="h-fit container mx-sm-w-85" style={{ maxHeight: '70vh' }}>
+                <form noValidate onSubmit={handleSubmit(submitSignature)}>
+                    <div className="d-flex justify-content-between border-bottom">
+                        <h1 className="modal-title" style={{ fontSize: '16px' }} id="addNewTimeSheetLabel">Upload Contract Signature</h1>
+                        <button type="button" className="btn-close"  onClick={() => setAddModalState(false)}></button>
+                    </div>
+                    <div className="mt-4">
+                        <div className="row gy-15 text-start">
+                            <div className="col-xl-12 text-start">
+                                
+                            <input type="file" className="form-control" id="logo" placeholder="Signature"
+                                {
+                                    ...register('Signature',
+                                            {
+                                                required: 'Required'
+                                            }
+                                        )
+                                }/>
+                            <p className='error-msg'>{errors.Signature?.message}</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <div className="d-flex justify-content-end mt-20" style={{ gap: '10px'}}>
+                            <button type="button" className="btn btn-danger" onClick={() => setAddModalState(false)}>
+                                <X size={18} className="mr-2" /> Cancel
+                            </button>
+                            <button type="submit" className="btn btn-success">
+                                <div className="dots" id="query-loader-1">
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                </div>
+                                <span id="query-text">
+                                    <CheckCheck size={18} className="mr-2" /> Upload Signature
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </Modal>
             <div className="row">
                 <div className="col-xl-12">
                     <div className="page-title-box d-flex-between flex-wrap gap-15">
@@ -159,11 +263,18 @@ export default function ContractDetails() {
                     </div>
                 </div>
                 <div className="col-12 d-flex justify-content-end mb-4 gap-4">
-                    <div className="dataTables-sorting-control ">
-                        <button className="btn btn-warning">
-                            <PenLine size={18} className="mr-2" /> Upload Signature
-                        </button>
-                    </div>
+                    {
+                        contractData?.signed
+                        ? (<></>)
+                        : (
+                            <div className="dataTables-sorting-control ">
+                                <button className="btn btn-warning" onClick={() => setAddModalState(true)}>
+                                    <PenLine size={18} className="mr-2" /> Sign Contract
+                                </button>
+                            </div>
+                        )
+                    }
+                    
                     <div className="dataTables-sorting-control ">
                         <button className="btn btn-success" onClick={() => downloadReceipt()}>
                             <div className="dots" id="query-loader">

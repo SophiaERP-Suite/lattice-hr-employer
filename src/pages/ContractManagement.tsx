@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from 'react-toastify';
 import { NavLink } from "react-router-dom";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Hashids from "hashids";
 import { fetchAllContractRequests, fetchAllContracts, submitContractRequest } from "../utils/ContractRequests";
 import Tippy from "@tippyjs/react";
@@ -62,6 +62,7 @@ export default function ContractManagement() {
     const [contractRequests, setContractRequests] = useState<ContractRequestsData[]>([]);
     const [totalRequests, setTotalRequests] = useState(0);
     const [totalContracts, setTotalContracts] = useState(0);
+    const [totalExpired, setTotalExpired] = useState(0);
     const [reqPageNumber, setReqPageNumber] = useState(1);
     const reqLimit = 10;
     const [pageNumber, setPageNumber] = useState(1);
@@ -110,6 +111,7 @@ export default function ContractManagement() {
                 console.log(data);
                 setContracts(data.data.contracts);
                 setTotalContracts(data.data.totalCount);
+                setTotalExpired(data.data.totalExpired);
             })
         } else {
             res.text()
@@ -132,6 +134,7 @@ export default function ContractManagement() {
         if (res.status === 200) {
           setContractRequests(data.data.requests);
           setTotalRequests(data.data.totalCount);
+          setTotalExpired(data.data.totalExpired);
         } else {
           const data = await res.text();
           console.log(JSON.parse(data));
@@ -286,7 +289,7 @@ export default function ContractManagement() {
                               </div>
                               <div className="card-content">
                                   <span className="d-block fs-16 mb-5">Expired / Inactive</span>
-                                  <h2 className="mb-5">0</h2>
+                                  <h2 className="mb-5">{ totalExpired }</h2>
                               </div>
                           </div>
                       </div>
