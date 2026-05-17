@@ -1,6 +1,109 @@
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  Clock,
+  MapPin,
+  Phone,
+  Mail,
+  Calendar,
+  CalendarCheck,
+  CalendarClock,
+  Filter,
+  ChevronDown,
+  Eye,
+  Settings
+} from "lucide-react";
+import { getOrganizationEmployees } from "../api/EmployerApi";
+import Hashids from "hashids";
+
+interface Employee {
+  jobSeekerId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  gender: string;
+  profilePhoto: string;
+  address: string;
+}
+
+interface PagedResult {
+  items: Employee[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
 
 const WorkAttendance = () => {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [pagedResult, setPagedResult] = useState<PagedResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+
+  const [filters, setFilters] = useState({
+    page: 1,
+    pageSize: 8,
+    search: "",
+    jobSectorId: undefined as number | undefined,
+  });
+
+  const hashIds = new Hashids("LatticeHrEncode", 10);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setFilters((prev) => ({ ...prev, search: searchInput, page: 1 }));
+    }, 500);
+    return () => clearTimeout(delay);
+  }, [searchInput]);
+
+  const fetchEmployees = async () => {
+    try {
+      setLoading(true);
+      const response = await getOrganizationEmployees(filters);
+      const result: PagedResult = response.data;
+      setPagedResult(result);
+      setEmployees(result.items);
+    } catch (err) {
+      console.error("Failed to load employees", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [filters]);
+
+  const totalPages = pagedResult?.totalPages ?? 1;
+  const totalCount = pagedResult?.totalCount ?? 0;
+  const currentPage = filters.page;
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setFilters((prev) => ({ ...prev, page }));
+  };
+
+  // Build page number array with ellipsis
+  const getPageNumbers = () => {
+    const pages: (number | "...")[] = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (currentPage > 3) pages.push("...");
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (currentPage < totalPages - 2) pages.push("...");
+      pages.push(totalPages);
+    }
+    return pages;
+  };
+
+  const showingFrom = totalCount === 0 ? 0 : (currentPage - 1) * filters.pageSize + 1;
+  const showingTo = Math.min(currentPage * filters.pageSize, totalCount);
+
   return (
     <div className="app-content-area">
       <div className="app-content-wrap">
@@ -8,30 +111,12 @@ const WorkAttendance = () => {
           <div className="row">
             <div className="col-xl-12">
               <div className="page-title-box d-flex-between flex-wrap gap-15">
-                <h1 className="page-title fs-18 lh-1">Work and Attendance</h1>
+                <h1 className="page-title fs-18 lh-1">Worker & Attendance</h1>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
                     <li className="breadcrumb-item active" aria-current="page">
-                      <NavLink to="/work-and-attendance">
-                        Work and Attendance
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="15"
-                          height="15"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          className="lucide lucide-chevron-right"
-                          aria-hidden="true"
-                        >
-                          <path d="m9 18 6-6-6-6"></path>
-                        </svg>
-                      </NavLink>
+                      Worker & Attendance
                     </li>
-
                     <li className="breadcrumb-item">
                       <NavLink to="/dashboard">Home</NavLink>
                     </li>
@@ -40,722 +125,300 @@ const WorkAttendance = () => {
               </div>
             </div>
 
-            <>
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-primary-transparent text-primary">
-                      <i className="ri-user-3-fill fs-42"></i>
-                    </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Active Candidates
-                      </span>
-                      <h2 className="mb-5">13</h2>
-                      <span className="text-success">
-                        +3%
-                        <i className="ri-arrow-up-line ml-5 d-inline-block"></i>
-                      </span>
-                      <span className="fs-12 text-muted ml-5">
-                        vs. last month
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-warning-transparent text-warning">
-                      <i className="ri-calendar-event-fill fs-42"></i>
-                    </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Pending Verification
-                      </span>
-                      <h2 className="mb-5">8</h2>
-                      <span className="text-success">
-                        +3%
-                        <i className="ri-arrow-up-line ml-5 d-inline-block"></i>
-                      </span>
-                      <span className="fs-12 text-muted ml-5">
-                        vs. last month
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-info-transparent text-info">
-                      <i className="ri-folder-open-fill fs-42"></i>
-                    </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Total Hours Logged
-                      </span>
-                      <h2 className="mb-5">5</h2>
-                      <span className="text-success">
-                        +3
-                        <i className="ri-arrow-up-line ml-5 d-inline-block"></i>
-                      </span>
-                      <span className="fs-12 text-muted ml-5">this week</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-purple-transparent text-purple">
-                      <i className="ri-file-list-fill fs-42"></i>
-                    </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Flagged Records
-                      </span>
-                      <h2 className="mb-5">26</h2>
-                      <span className="text-success">
-                        +3%
-                        <i className="ri-arrow-up-line ml-5 d-inline-block"></i>
-                      </span>
-                      <span className="fs-12 text-muted ml-5">
-                        vs. last month
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-
-            <div className="col-xl-12">
+            {/* Summary Cards */}
+            {/* <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
               <div className="card">
-                <div className="card-header justify-between">
-                  <h4 className="d-flex-items gap-10">Timesheets</h4>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      columnGap: "2rem",
-                    }}
-                  >
-                    <div className="dataTables-sorting-control ">
-                      <select className="form-select sorting-dropdown">
-                        <option value="">Sort By:</option>
-                        <option value="date_newest">Date: Newest First</option>
-                        <option value="date_oldest">Date: Oldest First</option>
-                      </select>
-                    </div>
+                <div className="card-body mini-card-body d-flex align-center gap-16">
+                  <div className="avatar avatar-xl bg-primary-transparent text-primary">
+                    <Users className="w-6 h-6" />
                   </div>
-                </div>
-
-                <div className="job-filter-container">
-                  <h6>Filter by:</h6>
-
-                  <div>
-                    <select className="form-select">
-                      <option value="">All Jobs</option>
-                      <option value="software-dev">Software Developer</option>
-                      <option value="frontend-dev">Frontend Developer</option>
-                      <option value="it-support">IT Support Technician</option>
-                    </select>
-
-                    <select className="form-select">
-                      <option value="">All Status</option>
-
-                      <option value="draft">Draft</option>
-                      <option value="pending-signature">Pending</option>
-                      <option value="active">Active</option>
-                      <option value="completed">Completed</option>
-                      <option value="rejected">Rejected</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div
-                  className="job-search-heading"
-                  style={{ marginTop: "2rem" }}
-                >
-                  <div className="job-result-size">
-                    <label>
-                      Show{" "}
-                      <select
-                        name="dataTableDefault_length"
-                        aria-controls="dataTableDefault"
-                        className="form-select form-select-sm"
-                      >
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                      </select>{" "}
-                      entries
-                    </label>
-                  </div>
-
-                  <div className="job-search-box">
-                    <label>
-                      Search:
-                      <input
-                        type="search"
-                        className="form-control form-control-sm"
-                        placeholder=""
-                        aria-controls="dataTableDefault"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div className="card-body pt-15">
-                  <div className="table-responsive">
-                    <table
-                      id="dataTableDefault"
-                      className="table text-nowrap w-100"
-                    >
-                      <thead>
-                        <tr>
-                          <th>Candidate</th>
-                          <th>Job Title</th>
-                          <th>Date</th>
-                          <th>Clock-In</th>
-                          <th>Clock-Out</th>
-                          <th>Status</th>
-                          <th>Method</th>
-                          <th className="recent-job-action">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-002.webp"
-                                  alt="image not found"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="#">Chinonso Okafor</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>Frontend Developer</td>
-                          <td>Nov 12, 2025</td>
-
-                          <td>08:00 AM</td>
-                          <td>05:30 PM</td>
-
-                          <td>
-                            <span className="badge bg-label-success">
-                              <i className="ri-check-line"></i>Verified
-                            </span>
-                          </td>
-
-                          <td>QR Code</td>
-
-                          <td className="recent-job-action">
-                            <button
-                              className="btn btn-sm btn-outline-primary me-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#addNewEmployee"
-                            >
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M5 18.89H6.41421L15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89ZM21 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L9.24264 18.89H21V20.89ZM15.7279 6.74785L17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785Z"></path>
-                              </svg>
-                              Edit
-                            </button>
-                            <button className="btn btn-sm btn-outline-danger">
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M17 2C17.5523 2 18 2.44772 18 3V7H21C21.5523 7 22 7.44772 22 8V18C22 18.5523 21.5523 19 21 19H18V21C18 21.5523 17.5523 22 17 22H7C6.44772 22 6 21.5523 6 21V19H3C2.44772 19 2 18.5523 2 18V8C2 7.44772 2.44772 7 3 7H6V3C6 2.44772 6.44772 2 7 2H17ZM16 17H8V20H16V17ZM20 9H4V17H6V16C6 15.4477 6.44772 15 7 15H17C17.5523 15 18 15.4477 18 16V17H20V9ZM8 10V12H5V10H8ZM16 4H8V7H16V4Z"></path>
-                              </svg>
-                              Print
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-003.webp"
-                                  alt="image not found"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="#">Amina Bello</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>Backend Developer</td>
-                          <td>Nov 12, 2025</td>
-                          <td>09:00 AM</td>
-                          <td>06:00 PM</td>
-                          <td>
-                            <span className="badge bg-label-warning">
-                              <i className="ri-time-line"></i> Pending
-                            </span>
-                          </td>
-                          <td>Geo-fencing</td>
-                          <td className="recent-job-action">
-                            <button
-                              className="btn btn-sm btn-outline-primary me-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#addNewEmployee"
-                            >
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M5 18.89H6.41421L15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89ZM21 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L9.24264 18.89H21V20.89ZM15.7279 6.74785L17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785Z"></path>
-                              </svg>
-                              Edit
-                            </button>
-                            <button className="btn btn-sm btn-outline-danger">
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M17 2C17.5523 2 18 2.44772 18 3V7H21C21.5523 7 22 7.44772 22 8V18C22 18.5523 21.5523 19 21 19H18V21C18 21.5523 17.5523 22 17 22H7C6.44772 22 6 21.5523 6 21V19H3C2.44772 19 2 18.5523 2 18V8C2 7.44772 2.44772 7 3 7H6V3C6 2.44772 6.44772 2 7 2H17ZM16 17H8V20H16V17ZM20 9H4V17H6V16C6 15.4477 6.44772 15 7 15H17C17.5523 15 18 15.4477 18 16V17H20V9ZM8 10V12H5V10H8ZM16 4H8V7H16V4Z"></path>
-                              </svg>
-                              Print
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-004.webp"
-                                  alt="image not found"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="#">Tunde Adewale</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>UI/UX Designer</td>
-                          <td>Nov 12, 2025</td>
-                          <td>07:30 AM</td>
-                          <td>04:00 PM</td>
-                          <td>
-                            <span className="badge bg-label-success">
-                              <i className="ri-check-line"></i> Verified
-                            </span>
-                          </td>
-                          <td>QR Code</td>
-                          <td className="recent-job-action">
-                            <button
-                              className="btn btn-sm btn-outline-primary me-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#addNewEmployee"
-                            >
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M5 18.89H6.41421L15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89ZM21 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L9.24264 18.89H21V20.89ZM15.7279 6.74785L17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785Z"></path>
-                              </svg>
-                              Edit
-                            </button>
-                            <button className="btn btn-sm btn-outline-danger">
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M17 2C17.5523 2 18 2.44772 18 3V7H21C21.5523 7 22 7.44772 22 8V18C22 18.5523 21.5523 19 21 19H18V21C18 21.5523 17.5523 22 17 22H7C6.44772 22 6 21.5523 6 21V19H3C2.44772 19 2 18.5523 2 18V8C2 7.44772 2.44772 7 3 7H6V3C6 2.44772 6.44772 2 7 2H17ZM16 17H8V20H16V17ZM20 9H4V17H6V16C6 15.4477 6.44772 15 7 15H17C17.5523 15 18 15.4477 18 16V17H20V9ZM8 10V12H5V10H8ZM16 4H8V7H16V4Z"></path>
-                              </svg>
-                              Print
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-005.webp"
-                                  alt="image not found"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="#">Kwame Mensah</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>Project Manager</td>
-                          <td>Nov 12, 2025</td>
-                          <td>08:30 AM</td>
-                          <td>05:00 PM</td>
-                          <td>
-                            <span className="badge bg-label-danger">
-                              <i className="ri-close-line"></i> Flagged
-                            </span>
-                          </td>
-                          <td>OTP PIN</td>
-                          <td className="recent-job-action">
-                            <button
-                              className="btn btn-sm btn-outline-primary me-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#addNewEmployee"
-                            >
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M5 18.89H6.41421L15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89ZM21 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L9.24264 18.89H21V20.89ZM15.7279 6.74785L17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785Z"></path>
-                              </svg>
-                              Edit
-                            </button>
-                            <button className="btn btn-sm btn-outline-danger">
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M17 2C17.5523 2 18 2.44772 18 3V7H21C21.5523 7 22 7.44772 22 8V18C22 18.5523 21.5523 19 21 19H18V21C18 21.5523 17.5523 22 17 22H7C6.44772 22 6 21.5523 6 21V19H3C2.44772 19 2 18.5523 2 18V8C2 7.44772 2.44772 7 3 7H6V3C6 2.44772 6.44772 2 7 2H17ZM16 17H8V20H16V17ZM20 9H4V17H6V16C6 15.4477 6.44772 15 7 15H17C17.5523 15 18 15.4477 18 16V17H20V9ZM8 10V12H5V10H8ZM16 4H8V7H16V4Z"></path>
-                              </svg>
-                              Print
-                            </button>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-006.webp"
-                                  alt="image not found"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="#">Zanele Khumalo</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>Data Analyst</td>
-                          <td>Nov 12, 2025</td>
-                          <td>09:15 AM</td>
-                          <td>05:15 PM</td>
-                          <td>
-                            <span className="badge bg-label-success">
-                              <i className="ri-check-line"></i> Verified
-                            </span>
-                          </td>
-                          <td>QR Code</td>
-                          <td className="recent-job-action">
-                            <button
-                              className="btn btn-sm btn-outline-primary me-2"
-                              data-bs-toggle="modal"
-                              data-bs-target="#addNewEmployee"
-                            >
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M5 18.89H6.41421L15.7279 9.57627L14.3137 8.16206L5 17.4758V18.89ZM21 20.89H3V16.6473L16.435 3.21231C16.8256 2.82179 17.4587 2.82179 17.8492 3.21231L20.6777 6.04074C21.0682 6.43126 21.0682 7.06443 20.6777 7.45495L9.24264 18.89H21V20.89ZM15.7279 6.74785L17.1421 8.16206L18.5563 6.74785L17.1421 5.33363L15.7279 6.74785Z"></path>
-                              </svg>
-                              Edit
-                            </button>
-                            <button className="btn btn-sm btn-outline-danger">
-                              <svg
-                                width={16}
-                                height={16}
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                              >
-                                <path d="M17 2C17.5523 2 18 2.44772 18 3V7H21C21.5523 7 22 7.44772 22 8V18C22 18.5523 21.5523 19 21 19H18V21C18 21.5523 17.5523 22 17 22H7C6.44772 22 6 21.5523 6 21V19H3C2.44772 19 2 18.5523 2 18V8C2 7.44772 2.44772 7 3 7H6V3C6 2.44772 6.44772 2 7 2H17ZM16 17H8V20H16V17ZM20 9H4V17H6V16C6 15.4477 6.44772 15 7 15H17C17.5523 15 18 15.4477 18 16V17H20V9ZM8 10V12H5V10H8ZM16 4H8V7H16V4Z"></path>
-                              </svg>
-                              Print
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="table-footer">
-                    <div
-                      className="dataTables_info"
-                      id="dataTableDefault_info"
-                      role="status"
-                      aria-live="polite"
-                    >
-                      Showing 1 to 10 of 12 entries
-                    </div>
-
-                    <div
-                      className="dataTables_paginate paging_simple_numbers"
-                      id="dataTableDefault_paginate"
-                    >
-                      <ul className="pagination">
-                        <li
-                          className="paginate_button page-item previous disabled"
-                          id="dataTableDefault_previous"
-                        >
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="0"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            Previous
-                          </a>
-                        </li>
-                        <li className="paginate_button page-item active">
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="1"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            1
-                          </a>
-                        </li>
-                        <li className="paginate_button page-item ">
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="2"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            2
-                          </a>
-                        </li>
-                        <li
-                          className="paginate_button page-item next"
-                          id="dataTableDefault_next"
-                        >
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="3"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            Next
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                  <div className="card-content">
+                    <span className="d-block fs-16 mb-5">Total Employees</span>
+                    <h2 className="mb-5">{totalCount}</h2>
+                    <span className="text-success">
+                      +2
+                      <i className="ri-arrow-up-line ml-5 d-inline-block"></i>
+                    </span>
+                    <span className="fs-12 text-muted ml-5">this month</span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* start timesheet details modal */}
-          <div
-            className="modal fade"
-            id="addNewEmployee"
-            tabIndex={-1}
-            aria-labelledby="addNewEmployeeLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h1 className="modal-title fs-16" id="addNewEmployeeLabel">
-                    Edit Timesheet
-                  </h1>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
+            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+              <div className="card">
+                <div className="card-body mini-card-body d-flex align-center gap-16">
+                  <div className="avatar avatar-xl bg-success-transparent text-success">
+                    <UserCheck className="w-6 h-6" />
+                  </div>
+                  <div className="card-content">
+                    <span className="d-block fs-16 mb-5">Present Today</span>
+                    <h2 className="mb-5">—</h2>
+                    <span className="fs-12 text-muted ml-5">attendance rate</span>
+                  </div>
                 </div>
-                <div className="modal-body">
-                  <div className="row" style={{ rowGap: "20px" }}>
-                    <div className="col-xl-12">
-                      <div className="text-center">
-                        <div className="avatar avatar-xxl radius-100">
-                          <img
-                            src="/Employer/assets/images/avatar/avatar-thumb-001.webp"
-                            alt="image not found"
-                            id="profileImage"
-                            className="radius-100"
-                          />
-                        </div>
-                        <span className="d-block fw-5 text-muted">
-                          Chinonso Okafor
-                        </span>
+              </div>
+            </div>
 
-                        <div className="mt-10 mb-5">
-                          <h6>Date Created:</h6>
-                          <span>Nov 11, 2025 11:00 AM</span>
-                        </div>
+            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+              <div className="card">
+                <div className="card-body mini-card-body d-flex align-center gap-16">
+                  <div className="avatar avatar-xl bg-warning-transparent text-warning">
+                    <Clock3 className="w-6 h-6" />
+                  </div>
+                  <div className="card-content">
+                    <span className="d-block fs-16 mb-5">Late Today</span>
+                    <h2 className="mb-5">—</h2>
+                    <span className="fs-12 text-muted ml-5">vs yesterday</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+              <div className="card">
+                <div className="card-body mini-card-body d-flex align-center gap-16">
+                  <div className="avatar avatar-xl bg-info-transparent text-info">
+                    <Clock className="w-6 h-6" />
+                  </div>
+                  <div className="card-content">
+                    <span className="d-block fs-16 mb-5">Avg. Hours</span>
+                    <h2 className="mb-5">7.8</h2>
+                    <span className="text-success">
+                      +0.3
+                      <i className="ri-arrow-up-line ml-5 d-inline-block"></i>
+                    </span>
+                    <span className="fs-12 text-muted ml-5">per day</span>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+
+            {/* Search & Filter Bar */}
+            <div className="col-xl-12 mb-2">
+              <div className="card">
+                <div className="card-body">
+                  <div className="row g-3 align-items-center">
+                    <div className="col-md-4">
+                      <div className="input-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search employees..."
+                          value={searchInput}
+                          onChange={(e) => setSearchInput(e.target.value)}
+                        />
                       </div>
                     </div>
-
-                    <div className="col-xl-12">
-                      <label htmlFor="role" className="form-label">
-                        Job Title
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control fw-semibold flatpickr-input"
-                        id="role"
-                        value={"Frontend Developer"}
-                        disabled
-                      />
-                    </div>
-
-                    <div className="col-xl-12">
-                      <label htmlFor="role" className="form-label">
-                        Clock-in Time
-                      </label>
-                      <input
-                        type="time"
-                        className="form-control fw-semibold flatpickr-input"
-                        id="role"
-                        value={"08:00"}
-                        disabled
-                      />
-                    </div>
-
-                    <div className="col-xl-12">
-                      <label htmlFor="role" className="form-label">
-                        Clock-out Time
-                      </label>
-                      <input
-                        type="time"
-                        className="form-control fw-semibold flatpickr-input"
-                        id="role"
-                        value={"17:00"}
-                        disabled
-                      />
-                    </div>
-
-                    <div className="col-xl-12">
-                      <label htmlFor="role" className="form-label">
-                        Attendance Method
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control fw-semibold flatpickr-input"
-                        id="role"
-                        value={"QR Code"}
-                        disabled
-                      />
-                    </div>
-
-                    <div className="col-xl-12">
-                      <label htmlFor="role" className="form-label">
-                        Candidate's Comment
-                      </label>
-                      <textarea
-                        className="form-control fw-semibold flatpickr-input"
-                        disabled
-                        rows={2}
-                      ></textarea>
-                    </div>
-
-                    <div className="col-xl-12 mt-10">
-                      <h5 className="mb-20">Rate Candidate</h5>
-
-                      <div className="row g-0">
-                        <div className="col-5">
-                          <input
-                            type="number"
-                            className="form-control fw-semibold flatpickr-input"
-                            id="rating"
-                            max={5}
-                            min={1}
-                          />
-                        </div>
-                        <div className="col-2">
-                          <b className="fs-20">&nbsp; / &nbsp;</b>
-                        </div>
-                        <div className="col-5">
-                          <input
-                            type="number"
-                            className="form-control fw-semibold flatpickr-input"
-                            value={5}
-                            disabled
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-30 mb-10">
-                      <button type="button" className="btn btn-primary w-100">
-                        Print Timesheet
+                    {/* <div className="col-md-3">
+                      <select
+                        className="form-select"
+                        value={filters.jobSectorId ?? ""}
+                        onChange={(e) =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            jobSectorId: e.target.value ? Number(e.target.value) : undefined,
+                            page: 1,
+                          }))
+                        }
+                      >
+                        <option value="">All Departments</option>
+                        <option value="1">Engineering</option>
+                        <option value="2">Design</option>
+                        <option value="3">Management</option>
+                        <option value="4">Data</option>
+                      </select>
+                    </div> */}
+                    <div className="col-md-2">
+                      <button
+                        className="btn btn-info w-100"
+                        onClick={() => {
+                          setSearchInput("");
+                          setFilters({
+                            page: 1,
+                            pageSize: 10,
+                            search: "",
+                            jobSectorId: undefined,
+                          });
+                        }}
+                      >
+                        <Filter size={16} className="me-1" /> Clear Filters
                       </button>
                     </div>
+                    <div className="col-md-2 ">
+                      <NavLink className="btn btn-success w-100" to={"/workAndAttendance/TimeOffRequests"}>
+                        <CalendarCheck size={16} /> Time-Offs
+                      </NavLink>
+                    </div>
+                    <div className="col-md-2">
+                      <NavLink className="btn btn-warning w-100" to={"/workAndAttendance/Timesheet"}>
+                        <CalendarClock size={16} /> TimeSheet
+                      </NavLink>
+                    </div>
                   </div>
-                </div>
-                <div className="modal-footer">
-                  <button className="btn btn-danger">Flag</button>
-                  <button type="button" className="btn btn-primary">
-                    Verify
-                  </button>
                 </div>
               </div>
             </div>
+
+            <div className="col-xl-12 mb-2">
+              <div className="card">
+                <div className="card-body">
+                  <h5>All Employees</h5></div></div></div>
+
+            {/* Employee Cards Grid */}
+            <div className="col-xl-12">
+              {loading ? (
+                <div className="text-center py-5">
+                  <div className="spinner-border text-primary" />
+                </div>
+              ) : employees.length === 0 ? (
+                <div className="text-center py-5 text-muted">No employees found.</div>
+              ) : (
+                <div className="row g-4">
+                  {employees.map((employee) => (
+                    <div key={employee.jobSeekerId} className="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-6">
+                      <div className="card h-100 shadow-sm border-0 hover-shadow transition">
+                        <div className="card-body">
+                          <div className="text-center mb-3">
+                            <div className="avatar avatar-xxl mx-auto mb-3">
+                              <img
+                                src={`${import.meta.env.VITE_API_URL}${employee.profilePhoto}` || "https://img.icons8.com/color/48/gender-neutral-user.png"}
+                                alt={`${employee.firstName} ${employee.lastName}`}
+                                className="rounded-circle border border-3 border-white shadow-sm"
+                                style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = `https://ui-avatars.com/api/?background=4f46e5&color=fff&bold=true&name=${employee.firstName}+${employee.lastName}`;
+                                }}
+                              />
+                            </div>
+                            <h5 className="mb-1 fw-semibold">
+                              {employee.firstName} {employee.lastName}
+                            </h5>
+                            {/* <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill">
+                              {employee.jobSector || "Employee"}
+                            </span> */}
+                          </div>
+
+                          {/* Contact Info */}
+                          <div className="mb-4">
+                            <div className="d-flex align-items-center gap-2 mb-2 small text-muted">
+                              <Mail size={14} className="flex-shrink-0" />
+                              <span className="text-truncate">{employee.email}</span>
+                            </div>
+                            <div className="d-flex align-items-center gap-2 mb-2 small text-muted">
+                              <Phone size={14} className="flex-shrink-0" />
+                              <span>{employee.phone}</span>
+                            </div>
+                            <div className="d-flex align-items-center gap-2 small text-muted">
+                              <MapPin size={14} className="flex-shrink-0" />
+                              <span className="text-truncate">{employee.address}</span>
+                            </div>
+                          </div>
+
+                          {/* Dropdown Action Button */}
+                          <div className="dropdown">
+                            <button
+                              className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <Settings size={16} />
+                              Actions
+                              <ChevronDown size={14} />
+                            </button>
+                            <ul className="dropdown-menu w-100">
+                              <li>
+                                <NavLink
+                                  to={`/workAndAttendance/EmployeeDetails/${hashIds.encode(employee.jobSeekerId.toString())}`}
+                                  className="dropdown-item d-flex align-items-center gap-2"
+                                >
+                                  <Eye size={16} className="text-primary" />
+                                  View Profile
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink
+                                  to={`/workAndAttendance/Timesheet/${hashIds.encode(employee.jobSeekerId.toString())}/${encodeURIComponent(employee.firstName + " " + employee.lastName)}`}
+                                  className="dropdown-item d-flex align-items-center gap-2"
+                                >
+                                  <Clock size={16} className="text-info" />
+                                  View Timesheet
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink
+                                  to={`/workAndAttendance/LeaveRequests/${hashIds.encode(employee.jobSeekerId)}/${encodeURIComponent(employee.firstName + " " + employee.lastName)}`}
+                                  className="dropdown-item d-flex align-items-center gap-2"
+                                >
+                                  <Calendar size={16} className="text-success" />
+                                  Leave Requests
+                                </NavLink>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Pagination */}
+            {!loading && totalCount > 0 && (
+              <div className="col-xl-12 mt-4">
+                <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <div className="text-muted small">
+                    Showing {showingFrom}–{showingTo} of {totalCount} employees
+                  </div>
+                  <nav>
+                    <ul className="pagination mb-0">
+                      <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                        <button className="page-link" onClick={() => goToPage(currentPage - 1)}>
+                          Previous
+                        </button>
+                      </li>
+
+                      {getPageNumbers().map((p, i) =>
+                        p === "..." ? (
+                          <li key={`ellipsis-${i}`} className="page-item disabled">
+                            <span className="page-link">…</span>
+                          </li>
+                        ) : (
+                          <li key={p} className={`page-item ${p === currentPage ? "active" : ""}`}>
+                            <button className="page-link" onClick={() => goToPage(p as number)}>
+                              {p}
+                            </button>
+                          </li>
+                        )
+                      )}
+
+                      <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                        <button className="page-link" onClick={() => goToPage(currentPage + 1)}>
+                          Next
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            )}
           </div>
-          {/* end timesheet details modal */}
         </div>
       </div>
-    </div>
+
+      <style>{`
+        .hover-shadow {
+          transition: all 0.3s ease;
+        }
+        .hover-shadow:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+        }
+      `}</style>
+    </div >
   );
 };
 

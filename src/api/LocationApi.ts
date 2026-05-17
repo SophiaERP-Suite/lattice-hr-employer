@@ -1,8 +1,8 @@
-const BaseURL = "http://localhost:5127";
+const BaseURL = import.meta.env.VITE_API_URL;
 const token = localStorage.getItem("token");
 
 export const getAllCountries = async () => {
-  const response = await fetch(`${BaseURL}/countries/GetAll`, {
+  const response = await fetch(`${BaseURL}/countries`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

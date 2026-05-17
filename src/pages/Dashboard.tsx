@@ -45,6 +45,30 @@ const Dashboard = () => {
     <div className="app-content-area">
       <div className="app-content-wrap">
         <div className="container-fluid">
+          <div className="row mb-4">
+            <div className="col-xl-12">
+              <div className="page-title-box d-flex-between flex-wrap gap-15 py-3">
+                <div>
+                  <h1 className="page-title fs-24 mb-5">
+                    {/* {dashboardData.welcome.greeting} */}
+                    Welcome
+                    {/* {user?.lastName} */}
+                  </h1>
+                  <p className="text-muted">
+                    Here's what needs your attention today
+                  </p>
+                </div>
+                <nav aria-label="breadcrumb">
+                  <ol className="breadcrumb breadcrumb-example1 mb-0">
+                    <li className="breadcrumb-item">
+                      <a href="/dashboard">Dashboard</a>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+
           <div className="row overflow-hidden">
             <>
               <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">

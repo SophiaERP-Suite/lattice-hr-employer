@@ -1,4 +1,6 @@
-const BaseURL = "http://localhost:5127";
+// const BaseURL = "http://localhost:5127";
+const BaseURL = import.meta.env.VITE_API_URL;
+
 const token = localStorage.getItem("token");
 
 export const CreateJob = async (data: FormData) => {

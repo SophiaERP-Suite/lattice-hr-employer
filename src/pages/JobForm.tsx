@@ -1,12 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
 import { useForm, useWatch } from "react-hook-form";
-import { 
-  ChevronRight, 
-  X, 
-  CheckCheck, 
+import {
+  ChevronRight,
+  X,
+  CheckCheck,
   FileText,
-  DollarSign,
   MapPin,
   Briefcase,
   Image
@@ -36,6 +35,7 @@ import {
   JobDto,
 } from "../types/Job";
 import Hashids from "hashids";
+import ShiftSelectorPanel from "../components/ShiftCard";
 
 const JobForm = () => {
   const navigate = useNavigate();
@@ -51,6 +51,9 @@ const JobForm = () => {
   const [cities, setCities] = useState<CityDto[]>([]);
   const [jobPhoto, setJobPhoto] = useState<File | null>(null);
   const [jobs, setJobs] = useState<JobDto | null>(null);
+  // const [showShift, setShowShift] = useState<boolean>(false)
+  const [shifts, setShifts] = useState([]);
+  const [selectedShifts, setSelectedShifts] = useState<number[]>([]);
 
   const {
     register,
@@ -221,7 +224,7 @@ const JobForm = () => {
         "Are you sure you want to cancel? All changes will be lost.",
       )
     ) {
-      navigate("/job-management");
+      navigate("/jobManagement");
     }
   };
 
@@ -247,9 +250,10 @@ const JobForm = () => {
     if (jobPhoto) {
       reqData.append("JobPhoto", jobPhoto);
     } else {
-      toast.error("Please select a job photo");
-      setLoading(false);
-      return;
+      // toast.error("Please select a job photo");
+      // setLoading(false);
+      // return;
+      reqData.append("JobPhoto", "");
     }
 
     reqData.append("CountryId", `${data.CountryId}`);
@@ -269,15 +273,15 @@ const JobForm = () => {
     reqData.append("Grade", `${data.JobGrade}`);
     reqData.append("CityId", `${data.LGAId}`);
     reqData.append("JobViewScope", `${data.JobViewScope}`);
+    selectedShifts.forEach(id => reqData.append("ShiftIds", id.toString()));
 
     try {
       const response = await CreateJob(reqData);
       if (response.status === 200 || response.status === 201) {
         const resData = await response.json();
-        const jobId = resData.result.data.jobId;
         toast.success("Job created successfully!");
         // navigate(`/jobDetails/${hashIds.encode(String(jobId))}`);
-        navigate("/job-management")
+        navigate("/jobManagement")
       } else {
         const resData = await response.text();
         toast.error("Failed to create job");
@@ -335,6 +339,9 @@ const JobForm = () => {
     }
   };
 
+  const shiftType = jobTypes.find(type => type.typeName.toLowerCase() === "shift");
+  const shiftTypeId = shiftType?.jobTypeId;
+
   return (
     <div className="app-content-area">
       <div className="app-content-wrap">
@@ -349,16 +356,14 @@ const JobForm = () => {
                 </h1>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
-                    <li className="breadcrumb-item">
-                      <NavLink to="/Dashboard">Home</NavLink>
-                    </li>
-                    <ChevronRight size={15} style={{ position: "relative", top: "3px" }} />
-                    <li className="breadcrumb-item">
-                      <NavLink to="/job-dashboard">Job Management</NavLink>
-                    </li>
-                    <ChevronRight size={15} style={{ position: "relative", top: "3px" }} />
                     <li className="breadcrumb-item active" aria-current="page">
                       {isEditMode ? "Edit Job" : "Create Job"}
+                    </li>
+                    <li className="breadcrumb-item">
+                      <NavLink to="/jobManagement">Job Management</NavLink>
+                    </li>
+                    <li className="breadcrumb-item">
+                      <NavLink to="/Dashboard">Home</NavLink>
                     </li>
                   </ol>
                 </nav>
@@ -373,7 +378,7 @@ const JobForm = () => {
                 {loading && !isEditMode ? (
                   <div className="card">
                     <div className="card-body text-center py-5">
-                      <div className="spinner-border text-primary" role="status">
+                      <div className="spinner-border text-success" role="status">
                         <span className="visually-hidden">Loading...</span>
                       </div>
                       <p className="mt-3">Loading form data...</p>
@@ -451,7 +456,7 @@ const JobForm = () => {
                         </div>
                       </div>
                     </div>
-     {/* Section 5: Media */}
+                    {/* Section 5: Media */}
                     <div className="card mb-3">
                       <div className="card-header ">
                         <h5 className="mb-0">
@@ -459,11 +464,11 @@ const JobForm = () => {
                           Job Photo
                         </h5>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body mt-10">
                         <div className="row">
                           <div className="col-md-6">
                             <label className="form-label">
-                              Upload Job Photo {!isEditMode && <span className="text-danger">*</span>}
+                              Upload Job Photo
                             </label>
                             <input
                               type="file"
@@ -481,11 +486,7 @@ const JobForm = () => {
                                 ✓ {isEditMode && "New photo "} Selected: {jobPhoto.name}
                               </small>
                             )}
-                            {!isEditMode && !jobPhoto && (
-                              <small className="text-muted d-block mt-1">
-                                Required for new job posting
-                              </small>
-                            )}
+                            {/* Validation helper text removed from here */}
                           </div>
 
                           {isEditMode && jobs?.jobPhoto && (
@@ -493,7 +494,7 @@ const JobForm = () => {
                               <label className="form-label">Current Photo</label>
                               <div className="border rounded p-2">
                                 <img
-                                  src={`http://localhost:5127/${jobs.jobPhoto}`}
+                                  src={`${import.meta.env.VITE_API_URL}${jobs.jobPhoto}`}
                                   className="img-fluid"
                                   alt="Current job"
                                   style={{ maxHeight: "200px", objectFit: "contain" }}
@@ -509,7 +510,7 @@ const JobForm = () => {
                       <div className="card-header ">
                         <h5 className="mb-0">
                           <Briefcase size={20} className="me-2" />
-                        Job Classification & Compensation
+                          Job Classification & Compensation
                         </h5>
                       </div>
                       <div className="card-body mt-10">
@@ -578,7 +579,7 @@ const JobForm = () => {
                               </div>
                             </div>
                           </div>
-                      
+
                           {/* Job Type */}
                           <div className="col-md-6">
                             <label className="form-label">
@@ -627,6 +628,15 @@ const JobForm = () => {
                             {errors.WorkModeId && (
                               <div className="invalid-feedback">{errors.WorkModeId.message}</div>
                             )}
+                          </div>
+
+                          <div className="col-md-12">
+                            <div className="row">
+                              {watch("JobTypeId") === shiftTypeId && (
+                                <ShiftSelectorPanel selectedShifts={selectedShifts} setSelectedShifts={setSelectedShifts} />
+                              )}
+
+                            </div>
                           </div>
 
                           {/* Job Sector */}
@@ -693,7 +703,7 @@ const JobForm = () => {
                           Location & Visibility
                         </h5>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body mt-10">
                         <div className="row g-3">
                           {/* Country */}
                           <div className="col-md-4">
@@ -815,7 +825,7 @@ const JobForm = () => {
                       </div>
                     </div>
 
-               
+
 
                     {/* Form Actions */}
                     <div className="card">
@@ -832,7 +842,7 @@ const JobForm = () => {
                           </button>
                           <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-success"
                             disabled={loading}
                           >
                             {loading ? (

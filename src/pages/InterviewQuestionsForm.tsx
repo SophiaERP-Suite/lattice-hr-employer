@@ -1,24 +1,30 @@
-import { useEffect, useMemo,useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Plus, Edit2, Trash2, ChevronRight, Save, X } from "lucide-react";
+import { Plus, Trash2, ChevronRight, X, CheckCheck, Pen, CircleQuestionMark } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import {
-  InterviewQuestion, QuestionFormData, 
+  InterviewQuestion, QuestionFormData,
 } from "../types/Interview";
 import { CreateInterview, DeleteQuestion, GetAllQuestions, UpdateQuestion } from "../api/InterviewApi";
 import Hashids from "hashids";
+import { GetJob } from "../api/JobApi";
+import { JobDto } from "../types/Job";
+import Modal from "../components/modal";
 
+type ModalType = "delete" | null;
 
 const InterviewQuestionsPageLocal = () => {
   const navigate = useNavigate();
- const params = useParams();
+  const params = useParams();
   const [questions, setQuestions] = useState<InterviewQuestion[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const [questionId, setQuestionId] = useState<number>();
+  const [questionId, setQuestionId] = useState<number | null>(null);
   const [editingQuestion, setEditingQuestion] = useState<InterviewQuestion | null>(null);
-
-    const hashIds = new Hashids("LatticeHrEncode", 10);
+  const [job, setJob] = useState<JobDto>();
+  const [modalType, setModalType] = useState<ModalType>(null);
+  const [loading, setLoading] = useState(false);
+  const hashIds = new Hashids("LatticeHrEncode", 10);
 
   const {
     register,
@@ -30,27 +36,51 @@ const InterviewQuestionsPageLocal = () => {
       displayOrder: 0,
     },
   });
+
   const hashId = useMemo(() => {
-    return hashIds.decode(String(params.id))[0];
+    return hashIds.decode(String(params.jobId))[0];
   }, [params.id]);
 
+  const jobParamId = useMemo(() => {
+    return hashIds.decode(String(params.jobId))[0];
+  }, [params.id]);
+
+  const jobId = Number(jobParamId)
+
   useEffect(() => {
-getQuestions()
+    getQuestions()
+    fetchMyJobs();
   }, [])
 
+  const fetchMyJobs = async () => {
+    try {
+      const response = await GetJob(Number(jobId));
+      if (!response) {
+        return;
+      } else {
+        setJob(response.data);
+      }
+    } catch {
+      console.error("Could not get fetch details");
+    } finally {
+    }
+  };
+
   const getQuestions = async () => {
-try {
-const questions = await GetAllQuestions(Number(hashId))
+    try {
+      setLoading(true)
+      const questions = await GetAllQuestions(Number(hashId))
 
-if(!questions) {
-  return
-}
-setQuestions(questions)
-}catch {
-
-}
+      if (!questions) {
+        return
+      }
+      setQuestions(questions)
+    } catch {
+      console.error("Failed to fetch questions")
+    } finally {
+      setLoading(false)
+    }
   }
-
 
   const onSubmit = async (data: QuestionFormData) => {
     try {
@@ -58,34 +88,43 @@ setQuestions(questions)
         const formData = new FormData()
 
         formData.append("InterviewQuestionId", Number(editingQuestion.interviewQuestionId).toString());
-    formData.append("QuestionText", data.question);
-    formData.append("QuestionHint", String(data.hint));
-    formData.append("Order", String(data.displayOrder || questions.length + 1));
+        formData.append("QuestionText", data.question);
+        formData.append("QuestionHint", String(data.hint));
+        const orderValue =
+          data.displayOrder !== undefined && data.displayOrder !== null
+            ? data.displayOrder
+            : questions.length + 1;
 
-const interviewResponse = await UpdateQuestion(formData)       
+        formData.append("Order", orderValue.toString());
 
-if(!interviewResponse) {
-toast.error("Failed to add question")
-  return
-}
-      
-        toast.success("Question updated successfully!");
+        const formDataObject = Object.fromEntries(formData.entries());
+        console.log("Form Data:", formDataObject);
+
+
+        const interviewResponse = await UpdateQuestion(formData)
+        console.log(interviewResponse)
+        if (interviewResponse.status !== 200) {
+          toast.error("Failed to update question")
+          return
+        } else {
+          toast.success("Question Updated Successfully")
+        }
       } else {
 
         const formData = new FormData()
 
-         formData.append("JobInterviewId", hashId.toString());
-    formData.append("QuestionText", data.question);
-    formData.append("QuestionHint", String(data.hint));
-    formData.append("Order", String(data.displayOrder || questions.length + 1));
+        formData.append("JobId", hashId.toString());
+        formData.append("QuestionText", data.question);
+        formData.append("QuestionHint", String(data.hint || "N/A"));
+        formData.append("Order", String(data.displayOrder || questions.length + 1));
 
-const interviewResponse = await CreateInterview(formData)       
+        const interviewResponse = await CreateInterview(formData)
 
-if(!interviewResponse) {
-toast.error("Failed to add question")
-  return
-}
-      
+        if (interviewResponse.status !== 200) {
+          toast.error("Failed to add question")
+          return
+        }
+
         toast.success("Question created successfully!");
       }
 
@@ -104,30 +143,27 @@ toast.error("Failed to add question")
     setQuestionId(questionId)
     reset({
       question: question.questionText,
-      hint: question.questionHint|| "",
+      hint: question.questionHint || "",
       displayOrder: question.order,
     });
   };
 
-  const handleDelete = async (questionId: number) => {
+  const handleDelete = async () => {
     try {
-    if (!window.confirm("Are you sure you want to delete this question?")) {
-      return;
-    }
+      const deleteQuestion = await DeleteQuestion(Number(questionId))
 
-    const deleteQuestion = await DeleteQuestion(questionId)
+      if (deleteQuestion.status !== 200) {
+        toast.error("Failed to delete question")
+        return
+      }
 
-    if(!deleteQuestion) {
+      toast.success("Question deleted successfully!");
+    } catch {
       toast.error("Failed to delete question")
-      return
+    } finally {
+      await getQuestions()
+      closeModal()
     }
-    
-    toast.success("Question deleted successfully!");
-  } catch {
- toast.error("Failed to delete question")
-  } finally {
-await getQuestions()
-  }
   };
 
   const cancelEdit = () => {
@@ -138,12 +174,36 @@ await getQuestions()
     });
   };
 
+  const openDeletModal = (questionId: number) => {
+    setModalType("delete");
+    setQuestionId(questionId);
+  };
+
+  const closeModal = () => {
+    setModalType(null);
+    setQuestionId(null);
+  };
+
   const sortedQuestions = [...questions].sort((a, b) => a.order - b.order);
 
   return (
     <div className="app-content-area">
       <div className="app-content-wrap">
         <ToastContainer />
+
+        <Modal
+          isOpen={modalType === "delete"}
+          title="Delete Question"
+          message="Are you sure you want to delete this question"
+          confirmText="Delete"
+          cancelText="Cancel"
+          confirmColor="danger"
+          buttonIcon={<Trash2 size={16} />}
+          headerIcon={<CircleQuestionMark size={20} />}
+          loading={loading}
+          onConfirm={handleDelete}
+          onCancel={closeModal}
+        />
         <div className="container-fluid">
           {/* Page Header */}
           <div className="row mb-3">
@@ -151,19 +211,24 @@ await getQuestions()
               <div className="page-title-box d-flex-between flex-wrap gap-15">
                 <div>
                   <h1 className="page-title fs-18 lh-1 mb-2">Interview Questions</h1>
-                  <p className="text-muted mb-0">Job ID: {}</p>
+                  <p className="text-muted mb-0">Job: {job?.jobTitle}</p>
                 </div>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
-                    <li className="breadcrumb-item">
-                      <a href="/Dashboard">Home</a>
-                    </li>
-                    <ChevronRight size={15} style={{ position: "relative", top: "3px" }} />
-                    <li className="breadcrumb-item">
-                      <a href="/job-dashboard">Jobs</a>
-                    </li>
-                    <ChevronRight size={15} style={{ position: "relative", top: "3px" }} />
+
                     <li className="breadcrumb-item active">Interview Questions</li>
+                    <ChevronRight size={15} style={{ position: "relative", top: "3px" }} />
+                    <li className="breadcrumb-item">
+                      <Link to={`/jobDetails/${hashIds.encode(String(jobId))}`}>Jobs Details</Link>
+                    </li>
+                    <ChevronRight size={15} style={{ position: "relative", top: "3px" }} />
+                    <li className="breadcrumb-item">
+                      <Link to="/jobManagement">Jobs</Link>
+                    </li>
+                    <ChevronRight size={15} style={{ position: "relative", top: "3px" }} />
+                    <li className="breadcrumb-item">
+                      <Link to="/Dashboard">Home</Link>
+                    </li>
                   </ol>
                 </nav>
               </div>
@@ -175,7 +240,7 @@ await getQuestions()
             <div className="col-12">
               <div className="d-flex gap-2 flex-wrap">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-success"
                   onClick={() => setShowForm(!showForm)}
                 >
                   <Plus size={18} className="me-1" />
@@ -183,7 +248,7 @@ await getQuestions()
                 </button>
                 <button
                   className="btn btn-outline-secondary"
-                  // onClick={() => navigate(`/jobDetails/${id}`)}
+                  onClick={() => navigate(`/jobDetails/${hashIds.encode(String(jobId))}`)}
                 >
                   Back to Job
                 </button>
@@ -201,7 +266,7 @@ await getQuestions()
                       {editingQuestion ? "Edit Question" : "Add New Question"}
                     </h5>
                   </div>
-                  <div className="card-body mt-10" style={{marginTop: "20px"}}>
+                  <div className="card-body mt-10" style={{ marginTop: "20px" }}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="row g-3">
                         {/* Question Text */}
@@ -260,16 +325,16 @@ await getQuestions()
                         {/* Form Actions */}
                         <div className="col-12">
                           <div className="d-flex gap-2">
-                            <button type="submit" className="btn btn-primary">
-                              <Save size={18} className="me-1" />
+                            <button type="submit" className="btn btn-success">
+                              <CheckCheck size={16} className="me-1" />
                               {editingQuestion ? "Update" : "Save"}
                             </button>
                             <button
                               type="button"
-                              className="btn btn-secondary"
+                              className="btn btn-dark"
                               onClick={cancelEdit}
                             >
-                              <X size={18} className="me-1" />
+                              <X size={16} className="me-1" />
                               Cancel
                             </button>
                           </div>
@@ -289,7 +354,7 @@ await getQuestions()
                 <div className="card-header ">
                   <h5 className="mb-0">Questions ({questions.length})</h5>
                 </div>
-                <div className="card-body">
+                <div className="card-body mt-15">
                   {questions.length === 0 ? (
                     <div className="text-center py-5">
                       <p className="text-muted mb-3">No questions yet</p>
@@ -324,18 +389,18 @@ await getQuestions()
                             </div>
                             <div className="d-flex gap-1 ms-3">
                               <button
-                                className="btn btn-sm btn-outline-primary"
+                                className="btn btn-sm btn-outline-warning"
                                 onClick={() => handleEdit(question, question.interviewQuestionId)}
                                 title="Edit"
                               >
-                                <Edit2 size={14} />
+                                <Pen size={16} />
                               </button>
                               <button
                                 className="btn btn-sm btn-outline-danger"
-                                onClick={() => handleDelete(question.interviewQuestionId)}
+                                onClick={() => openDeletModal(question.interviewQuestionId)}
                                 title="Delete"
                               >
-                                <Trash2 size={14} />
+                                <Trash2 size={16} />
                               </button>
                             </div>
                           </div>

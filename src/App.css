@@ -1,0 +1,106 @@
+.btn-modified {
+  font-size: 14px !important;
+  display: -webkit-inline-box;
+  display: -moz-inline-box;
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flexbox;
+  display: inline-flex;
+  align-items: center !important;
+  justify-content: start !important;
+  padding: 7.5px 20px;
+  transition: all 0.3s linear !important;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  border-radius: 6px;
+  white-space: nowrap !important;
+  gap: 0 6px !important;
+  font-weight: var(--fw-medium) !important;
+  border: none !important;
+  color: var(--custom-white);
+}
+
+.timeline-wrapper {
+  max-height: 400px; 
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* .timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e0e0e0;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 60px;
+  margin-bottom: 30px;
+}
+
+.timeline-icon {
+  position: absolute;
+  left: 11px;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 1;
+}
+
+.timeline-content h6 {
+  margin-bottom: 5px;
+} */
+
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  color: white;
+  font-size: 10px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  font-weight: 600;
+  animation: pop 0.2s ease-out;
+}
+
+.notification-danger {
+  background: #f63517;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+
+.form-check {
+    margin-right: 10px;
+}

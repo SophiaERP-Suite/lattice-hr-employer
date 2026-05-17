@@ -1,15 +1,50 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SettingsContext } from "../Contexts";
-import latty from "../assets/images/logo/latty.png"
-import avatarThumb1 from "../assets/images/avatar/avatar-thumb-001.webp"
-import avatarThumb2 from "../assets/images/avatar/avatar-thumb-002.webp"
-import avatarThumb3 from "../assets/images/avatar/avatar-thumb-003.webp"
-import avatarThumb4 from "../assets/images/avatar/avatar-thumb-004.webp"
-import avatarThumb5 from "../assets/images/avatar/avatar-thumb-005.webp"
+import { GetMyNotifications, MarkNotificationAsRead } from "../api/NotificationApi";
+import { NotificationData } from "../types/notification";
+import { Bell } from "lucide-react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-const Header = () => {
+dayjs.extend(relativeTime);
+
+
+interface Props {
+  employerInfo: any;
+}
+
+const Header = ({ employerInfo }: Props) => {
   const { setCategory } = useContext(SettingsContext);
+  const [notification, setNotification] = useState<NotificationData[]>();
+
+  useEffect(() => {
+    fetchMyNotifications()
+  }, []);
+
+  const fetchMyNotifications = async () => {
+
+    const response = await GetMyNotifications()
+
+    if (response.length > 0) {
+      setNotification(response)
+    }
+
+  }
+
+  const markAsRead = async (ActionUrl: string) => {
+
+    const response = await MarkNotificationAsRead(ActionUrl)
+
+    console.log("new res", response)
+    window.location.href = "./" + ActionUrl
+  }
+
+  const photoUrl = employerInfo?.user?.profilePhoto?.trim()
+    ? employerInfo.user.profilePhoto
+    : "https://img.icons8.com/color/48/gender-neutral-user.png";
+
+  console.log("header info", employerInfo)
 
   const handleToggle = () => {
     // @ts-expect-error/jquery
@@ -43,13 +78,13 @@ const Header = () => {
                 {/* large screen logo */}
                 <NavLink className="app-header-ls-dark-logo" to="/dashboard">
                   <img
-                    src={latty}
+                    // src={latty}
                     alt="image"
                   />
                 </NavLink>
                 <NavLink className="app-header-ls-light-logo" to="/dashboard">
                   <img
-                    src={latty}
+                    // src={latty}
                     alt="image"
                   />
                 </NavLink>
@@ -57,13 +92,13 @@ const Header = () => {
               <div className="app-header-mobile-logo">
                 <NavLink className="app-header-dark-logo" to="/dashboard">
                   <img
-                    src={latty}
+                    // src={latty}
                     alt="image"
                   />
                 </NavLink>
                 <NavLink className="app-header-light-logo" to="/dashboard">
                   <img
-                    src={latty}
+                    // src={latty}
                     alt="image"
                   />
                 </NavLink>
@@ -76,7 +111,7 @@ const Header = () => {
                   type="text"
                   placeholder="Search..."
                 />
-                <button type="submit">
+                <button className="btn btn-info" type="submit">
                   <i className="ri-search-line"></i>
                 </button>
               </form>
@@ -112,7 +147,7 @@ const Header = () => {
               </div>
             </div>
 
-            <div className="app-header-notification">
+            {/* <div className="app-header-notification">
               <div className="dropdown">
                 <a
                   className="dropdown-toggle"
@@ -284,7 +319,7 @@ const Header = () => {
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> */}
 
             <div className="app-header-notification">
               <div className="dropdown">
@@ -296,163 +331,65 @@ const Header = () => {
                   aria-expanded="false"
                 >
                   <span className="app-header-circle">
-                    <i className="ri-discuss-line"></i>
+                    {" "}
+                    <Bell size={18} className="ri-fullscreen-line" />
+                    {notification && notification.length > 0 && (
+                      <span className="notification-badge notification-danger">
+                        {notification.length > 99 ? "99+" : notification.length}
+                      </span>
+                    )}
                   </span>
                 </a>
                 <ul className="dropdown-menu">
                   <li className="dropdown-menu-header">
-                    <h5>Inbox</h5>
-                    <span className="badge bg-label-primary">8 New</span>
+                    <h5>Notifications</h5>
+
+                    {notification && notification.length > 0 && (
+                      <span className="badge bg-label-warning">
+                        {notification.length} New
+                      </span>
+                    )}
                   </li>
+
                   <li className="dropdown-notifications-list card-scrollbar">
                     <ul>
-                      <li className="dropdown-notifications-list-item">
-                        <div className="avatar">
-                          <img
-                            className="radius-100"
-                            src={avatarThumb1}
-                            alt="image not found"
-                          />
-                        </div>
-                        <div className="content">
-                          <h6 className="mb-5">New Order Received 🛒</h6>
-                          <p className="mb-5">
-                            Order #14523 has been placed by John Doe
-                          </p>
-                          <span className="text-body-secondary">Just now</span>
-                        </div>
-                        <div className="notifications-actions d-flex direction-column align-center">
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-notifications-read d-block pt-5"
+                      {notification && notification.length > 0 ? (
+                        notification.map((item) => (
+                          <li
+                            key={item.notificationId}
+                            onClick={() => markAsRead(item.actionUrl)}
+                            className="dropdown-notifications-list-item"
+                            style={{ cursor: "pointer" }}
                           >
-                            <span className="bullet bg-primary"></span>
-                          </a>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-notifications-archive"
-                          >
-                            <i className="ri-close-line"></i>
-                          </a>
-                        </div>
-                      </li>
-                      <li className="dropdown-notifications-list-item">
-                        <div className="avatar">
-                          <img
-                            className="radius-100"
-                            src={avatarThumb2}
-                            alt="image not found"
-                          />
-                        </div>
-                        <div className="content">
-                          <h6 className="mb-5">Low Stock Alert ⚠️</h6>
-                          <p className="mb-5">
-                            Only 3 items left in stock for "Smartwatch Pro X"
-                          </p>
-                          <span className="text-body-secondary">
-                            10 mins ago
-                          </span>
-                        </div>
-                        <div className="notifications-actions d-flex direction-column align-center">
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-notifications-read d-block pt-5"
-                          >
-                            <span className="bullet bg-primary"></span>
-                          </a>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-notifications-archive"
-                          >
-                            <i className="ri-close-line"></i>
-                          </a>
-                        </div>
-                      </li>
-                      <li className="dropdown-notifications-list-item">
-                        <div className="avatar">
-                          <img
-                            className="radius-100"
-                            src={avatarThumb3}
-                            alt="image not found"
-                          />
-                        </div>
-                        <div className="content">
-                          <h6 className="mb-5">New Customer Registered 👤</h6>
-                          <p className="mb-5">
-                            Sarah Williams has joined your store
-                          </p>
-                          <span className="text-body-secondary">
-                            30 mins ago
-                          </span>
-                        </div>
-                        <div className="notifications-actions d-flex direction-column align-center">
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-notifications-archive"
-                          >
-                            <i className="ri-close-line"></i>
-                          </a>
-                        </div>
-                      </li>
-                      <li className="dropdown-notifications-list-item">
-                        <div className="avatar">
-                          <img
-                            className="radius-100"
-                            src={avatarThumb4}
-                            alt="image not found"
-                          />
-                        </div>
-                        <div className="content">
-                          <h6 className="mb-5">Product Review ⭐</h6>
-                          <p className="mb-5">
-                            "Wireless Earbuds" got a new 5-star review
-                          </p>
-                          <span className="text-body-secondary">
-                            1 hour ago
-                          </span>
-                        </div>
-                        <div className="notifications-actions d-flex direction-column align-center">
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-notifications-archive"
-                          >
-                            <i className="ri-close-line"></i>
-                          </a>
-                        </div>
-                      </li>
-                      <li className="dropdown-notifications-list-item">
-                        <div className="avatar">
-                          <img
-                            className="radius-100"
-                            src={avatarThumb5}
-                            alt="image not found"
-                          />
-                        </div>
-                        <div className="content">
-                          <h6 className="mb-5">Weekly Sales Report 📈</h6>
-                          <p className="mb-5">
-                            Your store sales increased by 18% this week
-                          </p>
-                          <span className="text-body-secondary">
-                            3 hours ago
-                          </span>
-                        </div>
-                        <div className="notifications-actions d-flex direction-column align-center">
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-notifications-archive"
-                          >
-                            <i className="ri-close-line"></i>
-                          </a>
-                        </div>
-                      </li>
+                            <div className="content">
+                              <h6 className="mb-5">{item.title}</h6>
+                              <p className="mb-5">{item.message}</p>
+                              <span className="text-body-secondary">
+                                {dayjs(item.dateCreated).fromNow()}
+                              </span>
+                            </div>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="dropdown-notifications-list-item">
+                          <div className="content">
+                            <h6 className="mb-5">Ooops</h6>
+                            <p className="mb-5">You have no notifications</p>
+                          </div>
+                        </li>
+                      )}
                     </ul>
                   </li>
-                  <li className="dropdown-notifications-btn">
-                    <NavLink className="btn btn-primary w-100" to="/messages">
-                      View all messages
-                    </NavLink>
-                  </li>
+
+                  {/* <li className="dropdown-notifications-btn">
+    <a
+      className="btn btn-primary w-100"
+      onClick={() => toggleDropdown("menu1")}
+      href="Notifications"
+    >
+      View all notifications
+    </a>
+  </li> */}
                 </ul>
               </div>
             </div>
@@ -469,13 +406,13 @@ const Header = () => {
                   <div className="author">
                     <div className="author-thumb">
                       <img
-                        src={avatarThumb1}
+                        src={photoUrl}
                         alt="user"
                       />
                     </div>
                     <div className="officer-name-div">
-                      <h6 className="author-name lh-1">Okoye David</h6>
-                      <span>Officer</span>
+                      <h6 className="author-name lh-1">{employerInfo != null ? employerInfo.user.lastName : ""}, {employerInfo != null ? employerInfo.user.firstName : ""}</h6>
+                      <span>{employerInfo != null ? employerInfo.user.position : ""}</span>
                     </div>
                   </div>
                 </a>

@@ -1,37 +1,209 @@
+import { useState, useEffect, useMemo } from "react";
 import { NavLink } from "react-router-dom";
+import {
+  AlertCircle, CheckCircle,
+  Upload, Eye, X, Users
+} from "lucide-react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getPayrollSummary, confirmPayment } from "../api/PaymentApi";
+import { PayrollSummaryDto, PayslipDto } from "../types/Payment";
+
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const fmtCurrency = (amount: number, currencyCode = "NGN") =>
+  new Intl.NumberFormat("en", {
+    style: "currency",
+    currency: currencyCode,
+    minimumFractionDigits: 2,
+  }).format(amount);
+
+// ── Validation ────────────────────────────────────────────────────────────────
+
+interface FormErrors {
+  paymentRef?: string;
+  receiptFile?: string;
+}
+
+const MAX_FILE_SIZE_MB = 5;
+const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+
+const validateForm = (paymentRef: string, receiptFile: File | null): FormErrors => {
+  const errors: FormErrors = {};
+
+  // Payment reference
+  if (!paymentRef.trim()) {
+    errors.paymentRef = "Payment reference is required";
+  } else if (paymentRef.trim().length < 3) {
+    errors.paymentRef = "Reference must be at least 3 characters";
+  } else if (paymentRef.trim().length > 200) {
+    errors.paymentRef = "Reference must not exceed 200 characters";
+  }
+
+  // Receipt file — optional but validate if provided
+  if (receiptFile) {
+    if (!ALLOWED_FILE_TYPES.includes(receiptFile.type)) {
+      errors.receiptFile = "Only JPG, PNG, WEBP, or PDF files are accepted";
+    } else if (receiptFile.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      errors.receiptFile = `File must not exceed ${MAX_FILE_SIZE_MB}MB`;
+    }
+  }
+
+  return errors;
+};
+
+// ── Skeleton ──────────────────────────────────────────────────────────────────
+
+const TableSkeleton = () => (
+  <div className="placeholder-glow">
+    {[1, 2, 3, 4, 5].map(row => (
+      <div key={row} className="d-flex gap-3 mb-3 align-items-center">
+        <div className="placeholder rounded-circle" style={{ width: 36, height: 36, flexShrink: 0 }} />
+        <div className="flex-grow-1">
+          <span className="placeholder col-3 d-block mb-1" />
+          <span className="placeholder col-2" style={{ height: 10 }} />
+        </div>
+        <span className="placeholder col-2" />
+        <span className="placeholder col-2" />
+        <span className="placeholder col-1" />
+      </div>
+    ))}
+  </div>
+);
+
+// ── Main ──────────────────────────────────────────────────────────────────────
 
 const Payment = () => {
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+  const currentYear = now.getFullYear();
+
+  const [summary, setSummary] = useState<PayrollSummaryDto | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  const [statusFilter, setStatusFilter] = useState("");
+  const [pagination, setPagination] = useState({
+    page: 1, pageSize: 10, totalCount: 0, totalPages: 1,
+  });
+
+  // Confirm payment modal
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [selectedPayslip, setSelectedPayslip] = useState<PayslipDto | null>(null);
+  const [paymentRef, setPaymentRef] = useState("");
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [confirming, setConfirming] = useState(false);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  // View receipt modal
+  const [receiptModal, setReceiptModal] = useState(false);
+  const [receiptPayslip, setReceiptPayslip] = useState<PayslipDto | null>(null);
+
+  useEffect(() => { loadSummary(1); }, [statusFilter]);
+
+  useEffect(() => {
+    if (Object.keys(touched).length === 0) return;
+    const errors = validateForm(paymentRef, receiptFile);
+    setFormErrors(errors);
+  }, [paymentRef, receiptFile, touched]);
+
+  const loadSummary = async (page = 1) => {
+    setLoading(true);
+    try {
+      const data = await getPayrollSummary(
+        currentMonth,
+        currentYear,
+        page,
+        pagination.pageSize,
+        statusFilter || undefined,
+        search?.trim() || undefined
+      );
+      setSummary(data);
+      setPagination(prev => ({
+        ...prev,
+        page: data.page,
+        totalCount: data.totalCount,
+        totalPages: data.totalPages,
+      }));
+    } catch {
+      setSummary(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleConfirmPayment = async () => {
+    if (!selectedPayslip) return;
+
+    // Mark all fields as touched to show all errors
+    setTouched({ paymentRef: true, receiptFile: true });
+
+    const errors = validateForm(paymentRef, receiptFile);
+    setFormErrors(errors);
+
+    // Stop if there are any errors
+    if (Object.keys(errors).length > 0) return;
+
+    setConfirming(true);
+    try {
+      await confirmPayment(selectedPayslip.payslipId, paymentRef, receiptFile);
+      toast.success(`Payment confirmed for ${selectedPayslip.employeeName}`);
+      closeConfirmModal();
+      await loadSummary();
+    } catch {
+      toast.error("Failed to confirm payment");
+    } finally {
+      setConfirming(false);
+    }
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModal(false);
+    setSelectedPayslip(null);
+    setPaymentRef("");
+    setReceiptFile(null);
+    setFormErrors({});
+    setTouched({});
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    setReceiptFile(file);
+    setTouched(prev => ({ ...prev, receiptFile: true }));
+  };
+
+  const filteredPayslips = useMemo(() => {
+    if (!summary) return [];
+    return summary.payslips.filter(p =>
+      !search || p.employeeName.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [summary, search]);
+
+  const currencyCode = summary?.currencyCode ?? "NGN";
+  // const isFormValid = Object.keys(validateForm(paymentRef, receiptFile)).length === 0;
+
+  const MONTHS = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+
   return (
     <div className="app-content-area">
+      <ToastContainer position="top-right" />
       <div className="app-content-wrap">
         <div className="container-fluid">
           <div className="row">
+
+            {/* Header */}
             <div className="col-xl-12">
               <div className="page-title-box d-flex-between flex-wrap gap-15">
-                <h1 className="page-title fs-18 lh-1">Payment</h1>
+                <h1 className="page-title fs-18 lh-1">
+                  Payslips — {MONTHS[currentMonth - 1]} {currentYear}
+                </h1>
                 <nav aria-label="breadcrumb">
                   <ol className="breadcrumb breadcrumb-example1 mb-0">
-                    <li className="breadcrumb-item">
-                      <NavLink to="/payment">
-                        Payment
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="15"
-                          height="15"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          className="lucide lucide-chevron-right"
-                          aria-hidden="true"
-                        >
-                          <path d="m9 18 6-6-6-6"></path>
-                        </svg>
-                      </NavLink>
-                    </li>
-
+                    <li className="breadcrumb-item active">Payslips</li>
                     <li className="breadcrumb-item">
                       <NavLink to="/dashboard">Home</NavLink>
                     </li>
@@ -40,637 +212,544 @@ const Payment = () => {
               </div>
             </div>
 
-            <>
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-warning-transparent text-warning">
-                      <i className="ri-alert-line fs-42"></i>
+            {/* Summary Cards */}
+            {summary && (
+              <div className="d-none">
+                <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+                  <div className="card">
+                    <div className="card-body mini-card-body d-flex align-center gap-16">
+                      <div className="avatar avatar-xl bg-primary-transparent text-primary">
+                        <Users className="w-6 h-6" />
+                      </div>
+                      <div className="card-content">
+                        <span className="d-block fs-16 mb-5">Total Employees</span>
+                        <h2>{summary.totalEmployees}</h2>
+                      </div>
                     </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Pending Payments
-                      </span>
-                      <h2>&#8358;1,540,000</h2>
+                  </div>
+                </div>
+                <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+                  <div className="card">
+                    <div className="card-body mini-card-body d-flex align-center gap-16">
+                      <div className="avatar avatar-xl bg-info-transparent text-info">
+                        <i className="ri-money-dollar-circle-line fs-42" />
+                      </div>
+                      <div className="card-content">
+                        <span className="d-block fs-16 mb-5">Total Payroll</span>
+                        <h2>{fmtCurrency(summary.totalAmountDue, currencyCode)}</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+                  <div className="card">
+                    <div className="card-body mini-card-body d-flex align-center gap-16">
+                      <div className="avatar avatar-xl bg-warning-transparent text-warning">
+                        <i className="ri-alert-line fs-42" />
+                      </div>
+                      <div className="card-content">
+                        <span className="d-block fs-16 mb-5">Pending</span>
+                        <h2>{fmtCurrency(summary.totalPending, currencyCode)}</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+                  <div className="card">
+                    <div className="card-body mini-card-body d-flex align-center gap-16">
+                      <div className="avatar avatar-xl bg-success-transparent text-success">
+                        <i className="ri-checkbox-circle-line fs-42" />
+                      </div>
+                      <div className="card-content">
+                        <span className="d-block fs-16 mb-5">Paid</span>
+                        <h2>{fmtCurrency(summary.totalPaid, currencyCode)}</h2>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-success-transparent text-success">
-                      <i className="ri-checkbox-circle-line fs-42"></i>
-                    </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Payments Completed
-                      </span>
-                      <h2>&#8358;3,820,000</h2>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-primary-transparent text-primary">
-                      <i className="ri-money-dollar-circle-line fs-42"></i>
-                    </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Payments This Month
-                      </span>
-                      <h2>&#8358;820,000</h2>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            )}
 
-              <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-                <div className="card">
-                  <div className="card-body mini-card-body d-flex align-center gap-16">
-                    <div className="avatar avatar-xl bg-info-transparent text-info">
-                      <i className="ri-user-line fs-42"></i>
-                    </div>
-                    <div className="card-content">
-                      <span className="d-block fs-16 mb-5">
-                        Number of Transactions
-                      </span>
-                      <h2>42</h2>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-
+            {/* Payment Table */}
             <div className="col-xl-12">
               <div className="card">
-                <div className="card-header justify-between">
-                  <h4 className="d-flex-items gap-10">Payment Transactions</h4>
+                <div className="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <h5 className="mb-0">Employee Payslips</h5>
+                  <div className="d-flex gap-2 align-items-center flex-wrap">
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      columnGap: "2rem",
-                    }}
-                  >
-                    <div className="dataTables-sorting-control ">
-                      <select className="form-select sorting-dropdown">
-                        <option value="">Sort By:</option>
-                        <option value="date_newest">
-                          Issued Date: Newest First
-                        </option>
-                        <option value="date_oldest">
-                          Issued Date: Oldest First
-                        </option>
-                        <option value="date_newest">
-                          Amount: Highest First
-                        </option>
-                        <option value="date_oldest">
-                          Amount: Lowest First
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="job-filter-container">
-                  <h6>Filter by:</h6>
-
-                  <div>
-                    <select className="form-select">
-                      <option value="">All Jobs</option>
-                      <option value="software-dev">Software Developer</option>
-                      <option value="frontend-dev">Frontend Developer</option>
-                      <option value="it-support">IT Support Technician</option>
-                    </select>
-
-                    <select className="form-select">
+                    {/* Status filter */}
+                    <select
+                      className="form-select form-select-sm"
+                      style={{ width: 140 }}
+                      value={statusFilter}
+                      onChange={e => setStatusFilter(e.target.value)}
+                    >
                       <option value="">All Status</option>
-
-                      <option value="success">Success</option>
-                      <option value="pending">Pending</option>
-                      <option value="failed">Failed</option>
+                      <option value="0">Pending</option>
+                      <option value="1">Paid</option>
                     </select>
-                  </div>
-                </div>
 
-                <div
-                  className="job-search-heading"
-                  style={{ marginTop: "2rem" }}
-                >
-                  <div className="job-result-size">
-                    <label>
-                      Show{" "}
-                      <select
-                        name="dataTableDefault_length"
-                        aria-controls="dataTableDefault"
-                        className="form-select form-select-sm"
-                      >
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                      </select>{" "}
-                      entries
-                    </label>
-                  </div>
-
-                  <div className="job-search-box">
-                    <label>
-                      Search:
+                    {/* Search — fires on Enter or button click */}
+                    <div className="input-group input-group-sm" style={{ width: 220 }}>
                       <input
                         type="search"
-                        className="form-control form-control-sm"
-                        placeholder=""
-                        aria-controls="dataTableDefault"
+                        className="form-control"
+                        placeholder="Search employee..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                        onKeyDown={e => { if (e.key === "Enter") loadSummary(1); }}
                       />
-                    </label>
+                      {/* <button
+                        className="btn btn-outline-secondary"
+                        onClick={() => loadSummary(1)}
+                      >
+                        Go
+                      </button> */}
+                    </div>
+
+                    {/* Clear */}
+                    {(search || statusFilter) && (
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => {
+                          setSearch("");
+                          setStatusFilter("");
+                        }}
+                      >
+                        <X size={14} /> Clear
+                      </button>
+                    )}
                   </div>
                 </div>
 
                 <div className="card-body pt-15">
-                  <div className="table-responsive">
-                    <table
-                      className="table text-nowrap w-100 dataTable no-footer"
-                      id="commonTable"
-                      aria-describedby="commonTable_info"
-                    >
-                      <thead>
-                        <tr>
-                          <th>Transaction ID</th>
-                          <th>Invoice ID</th>
-                          <th>Candidate</th>
-                          <th>Job Title</th>
-                          <th>Amount Paid</th>
-                          <th>Payment Date</th>
-                          <th>Status</th>
-                          <th className="recent-job-action">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              TRN-12345
-                            </a>
-                          </td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              INV-12345
-                            </a>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-001.webp"
-                                  alt="#"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="javascript:void(0);"> Felix Okoh</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>Frontend Dveloper</td>
-                          <td>
-                            <span className="fw-7">&#8358;255,450.00</span>
-                          </td>
-                          <td>11 Nov, 2025 11:00 PM</td>
-                          <td>
-                            <span className="badge bg-label-success">
-                              Success
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-5">
-                              <a
-                                className="btn-icon btn-success-light"
-                                href="receipt"
-                              >
-                                <i className="ri-eye-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-info-light"
-                                href="javascript:void(0);"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                data-bs-title="Track Response"
-                              >
-                                <i className="ri-send-plane-line"></i>
-                              </a>
-
-                              <a
-                                className="btn-icon btn-primary-light"
-                                href="javascript:void(0);"
-                              >
-                                <i className="ri-download-2-line"></i>
-                              </a>
-                              <button
-                                className="btn-icon btn-danger-light removeRow"
-                                type="button"
-                              >
-                                <i className="ri-delete-bin-line"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              TRN-12346
-                            </a>
-                          </td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              INV-12346
-                            </a>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-003.webp"
-                                  alt="#"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="javascript:void(0);">Amina Bello</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>Backend Developer</td>
-                          <td>
-                            <span className="fw-7">&#8358;300,000.00</span>
-                          </td>
-                          <td>12 Nov, 2025 10:00 AM</td>
-                          <td>
-                            <span className="badge bg-label-success">
-                              Success
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-5">
-                              <a
-                                className="btn-icon btn-success-light"
-                                href="receipt"
-                              >
-                                <i className="ri-eye-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-info-light"
-                                href="javascript:void(0);"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                data-bs-title="Track Response"
-                              >
-                                <i className="ri-send-plane-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-primary-light"
-                                href="javascript:void(0);"
-                              >
-                                <i className="ri-download-2-line"></i>
-                              </a>
-                              <button
-                                className="btn-icon btn-danger-light removeRow"
-                                type="button"
-                              >
-                                <i className="ri-delete-bin-line"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              TRN-12347
-                            </a>
-                          </td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              INV-12347
-                            </a>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-004.webp"
-                                  alt="#"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="javascript:void(0);">Kwame Mensah</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>UI/UX Designer</td>
-                          <td>
-                            <span className="fw-7">&#8358;275,500.00</span>
-                          </td>
-                          <td>12 Nov, 2025 02:30 PM</td>
-                          <td>
-                            <span className="badge bg-label-success">
-                              Success
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-5">
-                              <a
-                                className="btn-icon btn-success-light"
-                                href="receipt"
-                              >
-                                <i className="ri-eye-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-info-light"
-                                href="javascript:void(0);"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                data-bs-title="Track Response"
-                              >
-                                <i className="ri-send-plane-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-primary-light"
-                                href="javascript:void(0);"
-                              >
-                                <i className="ri-download-2-line"></i>
-                              </a>
-                              <button
-                                className="btn-icon btn-danger-light removeRow"
-                                type="button"
-                              >
-                                <i className="ri-delete-bin-line"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              TRN-12348
-                            </a>
-                          </td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              INV-12348
-                            </a>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-005.webp"
-                                  alt="#"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="javascript:void(0);">
-                                    Thabo Dlamini
-                                  </a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>Mobile Developer</td>
-                          <td>
-                            <span className="fw-7">&#8358;320,000.00</span>
-                          </td>
-                          <td>13 Nov, 2025 09:15 AM</td>
-                          <td>
-                            <span className="badge bg-label-success">
-                              Success
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-5">
-                              <a
-                                className="btn-icon btn-success-light"
-                                href="receipt"
-                              >
-                                <i className="ri-eye-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-info-light"
-                                href="javascript:void(0);"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                data-bs-title="Track Response"
-                              >
-                                <i className="ri-send-plane-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-primary-light"
-                                href="javascript:void(0);"
-                              >
-                                <i className="ri-download-2-line"></i>
-                              </a>
-                              <button
-                                className="btn-icon btn-danger-light removeRow"
-                                type="button"
-                              >
-                                <i className="ri-delete-bin-line"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              TRN-12349
-                            </a>
-                          </td>
-                          <td>
-                            <a
-                              href="javascript:void(0);"
-                              className="text-primary fw-6"
-                            >
-                              INV-12349
-                            </a>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-10">
-                              <div className="avatar radius-100">
-                                <img
-                                  src="/Employer/assets/images/avatar/avatar-thumb-006.webp"
-                                  alt="#"
-                                  className="radius-100"
-                                />
-                              </div>
-                              <div>
-                                <h6>
-                                  <a href="javascript:void(0);">Zanele Nkosi</a>
-                                </h6>
-                              </div>
-                            </div>
-                          </td>
-                          <td>QA Engineer</td>
-                          <td>
-                            <span className="fw-7">&#8358;290,750.00</span>
-                          </td>
-                          <td>13 Nov, 2025 03:45 PM</td>
-                          <td>
-                            <span className="badge bg-label-success">
-                              Success
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex-items gap-5">
-                              <a
-                                className="btn-icon btn-success-light"
-                                href="receipt"
-                              >
-                                <i className="ri-eye-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-info-light"
-                                href="javascript:void(0);"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                data-bs-title="Track Response"
-                              >
-                                <i className="ri-send-plane-line"></i>
-                              </a>
-                              <a
-                                className="btn-icon btn-primary-light"
-                                href="javascript:void(0);"
-                              >
-                                <i className="ri-download-2-line"></i>
-                              </a>
-                              <button
-                                className="btn-icon btn-danger-light removeRow"
-                                type="button"
-                              >
-                                <i className="ri-delete-bin-line"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="table-footer">
-                    <div
-                      className="dataTables_info"
-                      id="dataTableDefault_info"
-                      role="status"
-                      aria-live="polite"
-                    >
-                      Showing 1 to 10 of 12 entries
+                  {loading ? (
+                    <TableSkeleton />
+                  ) : !summary || summary.payslips.length === 0 ? (
+                    <div className="text-center py-5 ">
+                      <AlertCircle size={48} className="mb-3 d-block mx-auto" />
+                      <h6>No payment data for this month</h6>
+                      <p className="small mb-0">
+                        Payroll has not been generated yet for {MONTHS[currentMonth - 1]} {currentYear}.
+                      </p>
                     </div>
-
-                    <div
-                      className="dataTables_paginate paging_simple_numbers"
-                      id="dataTableDefault_paginate"
-                    >
-                      <ul className="pagination">
-                        <li
-                          className="paginate_button page-item previous disabled"
-                          id="dataTableDefault_previous"
-                        >
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="0"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            Previous
-                          </a>
-                        </li>
-                        <li className="paginate_button page-item active">
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="1"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            1
-                          </a>
-                        </li>
-                        <li className="paginate_button page-item ">
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="2"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            2
-                          </a>
-                        </li>
-                        <li
-                          className="paginate_button page-item next"
-                          id="dataTableDefault_next"
-                        >
-                          <a
-                            href="#"
-                            aria-controls="dataTableDefault"
-                            data-dt-idx="3"
-                            tabIndex={0}
-                            className="page-link"
-                          >
-                            Next
-                          </a>
-                        </li>
-                      </ul>
+                  ) : (
+                    <div className="table-responsive">
+                      <table className="table table-hover align-middle">
+                        <thead>
+                          <tr>
+                            <th>Employee</th>
+                            <th>Days Worked</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Payment Date</th>
+                            <th>Reference</th>
+                            <th className="text-end">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredPayslips.length === 0 ? (
+                            <tr>
+                              <td colSpan={7} className="text-center py-4 ">
+                                No employees match your search
+                              </td>
+                            </tr>
+                          ) : (
+                            filteredPayslips.map(p => (
+                              <tr key={p.payslipId}>
+                                <td>
+                                  <div className="d-flex align-items-center gap-10">
+                                    {p.employeeAvatar ? (
+                                      <div className="avatar radius-100">
+                                        <img
+                                          src={`${BASE_URL}/${p.employeeAvatar}`}
+                                          alt={p.employeeName}
+                                          className="radius-100"
+                                          style={{ width: 36, height: 36, objectFit: "cover" }}
+                                          onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="avatar avatar-sm bg-primary-transparent text-primary radius-100 d-flex align-items-center justify-content-center fw-bold"
+                                        style={{ width: 36, height: 36 }}
+                                      >
+                                        {p.employeeName.charAt(0).toUpperCase()}
+                                      </div>
+                                    )}
+                                    <div className="fw-medium">{p.employeeName}</div>
+                                  </div>
+                                </td>
+                                <td>
+                                  <span className={p.absentDays > 0 ? "text-warning" : "text-success"}>
+                                    {p.daysWorked} / {p.standardDays}
+                                  </span>
+                                  {p.absentDays > 0 && (
+                                    <div>
+                                      <small className="text-danger">
+                                        {p.absentDays} absent · −{fmtCurrency(p.absentDeduction, currencyCode)}
+                                      </small>
+                                    </div>
+                                  )}
+                                </td>
+                                <td>
+                                  <span className="fw-bold text-success fs-5">
+                                    {fmtCurrency(p.amountDue, currencyCode)}
+                                  </span>
+                                </td>
+                                <td>
+                                  {p.status === "Paid" ? (
+                                    <span className="badge bg-label-success">
+                                      <CheckCircle size={12} className="me-1" />Paid
+                                    </span>
+                                  ) : (
+                                    <span className="badge bg-label-warning">Pending</span>
+                                  )}
+                                </td>
+                                <td>
+                                  {p.datePaid ? (
+                                    <span className=" small">
+                                      {new Date(p.datePaid).toLocaleDateString("en-GB", {
+                                        day: "2-digit", month: "short", year: "numeric",
+                                      })}
+                                    </span>
+                                  ) : "—"}
+                                </td>
+                                <td>
+                                  {p.paymentReference ? (
+                                    <span className="badge bg-label-info">{p.paymentReference}</span>
+                                  ) : "—"}
+                                </td>
+                                <td className="text-end">
+                                  <div className="d-flex justify-content-end gap-2">
+                                    {p.status === "Paid" && p.paymentReceiptPath && (
+                                      <button
+                                        className="btn btn-sm btn-success"
+                                        onClick={() => { setReceiptPayslip(p); setReceiptModal(true); }}
+                                      >
+                                        <Eye size={14} className="me-1" /> Receipt
+                                      </button>
+                                    )}
+                                    {p.status === "Draft" && (
+                                      <button
+                                        className="btn btn-sm btn-success"
+                                        onClick={() => { setSelectedPayslip(p); setConfirmModal(true); }}
+                                      >
+                                        <Upload size={14} className="me-1" /> Upload Receipt
+                                      </button>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                        {filteredPayslips.length > 0 && (
+                          <tfoot className="d-none table-light fw-bold">
+                            <tr>
+                              <td colSpan={2} className="text-end">Total:</td>
+                              <td className="text-success">
+                                {fmtCurrency(
+                                  filteredPayslips.reduce((s, p) => s + p.amountDue, 0),
+                                  currencyCode
+                                )}
+                              </td>
+                              <td colSpan={4} />
+                            </tr>
+                          </tfoot>
+                        )}
+                      </table>
                     </div>
-                  </div>
+                  )}
+                  {/* Pagination */}
+                  {pagination.totalPages > 1 && (
+                    <div className="d-flex justify-content-between align-items-center mt-4">
+                      <small className="">
+                        Showing {((pagination.page - 1) * pagination.pageSize) + 1}–
+                        {Math.min(pagination.page * pagination.pageSize, pagination.totalCount)} of{" "}
+                        {pagination.totalCount} employees
+                      </small>
+                      <nav>
+                        <ul className="pagination mb-0">
+                          <li className={`page-item ${pagination.page === 1 ? "disabled" : ""}`}>
+                            <button className="page-link"
+                              onClick={() => loadSummary(pagination.page - 1)}>
+                              Previous
+                            </button>
+                          </li>
+                          {[...Array(pagination.totalPages)].map((_, i) => (
+                            <li key={i + 1}
+                              className={`page-item ${pagination.page === i + 1 ? "active" : ""}`}>
+                              <button className="page-link"
+                                onClick={() => loadSummary(i + 1)}>
+                                {i + 1}
+                              </button>
+                            </li>
+                          ))}
+                          <li className={`page-item ${pagination.page === pagination.totalPages ? "disabled" : ""}`}>
+                            <button className="page-link"
+                              onClick={() => loadSummary(pagination.page + 1)}>
+                              Next
+                            </button>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* ── Confirm Payment Modal ─────────────────────────────────────────── */}
+      {confirmModal && selectedPayslip && (
+        <div
+          className="modal show fade"
+          style={{
+            display: "block",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050,
+          }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Confirm Payment</h5>
+                <button className="btn-close" onClick={closeConfirmModal} />
+              </div>
+              <div className="modal-body">
+
+                {/* Employee + amount summary */}
+                <div className="alert alert-info mb-4">
+                  <strong className="d-block">{selectedPayslip.employeeName}</strong>
+                  <small className="">
+                    {MONTHS[selectedPayslip.month - 1]} {selectedPayslip.year} ·{" "}
+                    {selectedPayslip.daysWorked}/{selectedPayslip.standardDays} days worked
+                  </small>
+                  <div className="mt-1">
+                    <strong className="text-success fs-5">
+                      {fmtCurrency(selectedPayslip.amountDue, currencyCode)}
+                    </strong>
+                  </div>
+                  {selectedPayslip.absentDays > 0 && (
+                    <small className="text-danger d-block mt-1">
+                      Includes deduction of {fmtCurrency(selectedPayslip.absentDeduction, currencyCode)} for{" "}
+                      {selectedPayslip.absentDays} absent day{selectedPayslip.absentDays !== 1 ? "s" : ""}
+                    </small>
+                  )}
+                </div>
+
+                {/* Payment reference */}
+                <div className="mb-3">
+                  <label className="form-label fw-medium">
+                    Payment Reference <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`form-control ${touched.paymentRef && formErrors.paymentRef ? "is-invalid" : touched.paymentRef && !formErrors.paymentRef ? "is-valid" : ""}`}
+                    placeholder="e.g. bank transfer ref, cheque number..."
+                    value={paymentRef}
+                    onChange={e => {
+                      setPaymentRef(e.target.value);
+                      setTouched(prev => ({ ...prev, paymentRef: true }));
+                    }}
+                    onBlur={() => setTouched(prev => ({ ...prev, paymentRef: true }))}
+                  />
+                  {touched.paymentRef && formErrors.paymentRef ? (
+                    <div className="invalid-feedback">{formErrors.paymentRef}</div>
+                  ) : (
+                    <small className="">
+                      Enter the reference from your bank transfer or payment method.
+                    </small>
+                  )}
+                </div>
+
+                {/* Receipt upload */}
+                <div className="mb-1">
+                  <label className="form-label fw-medium">
+                    Upload Receipt / Proof of Payment
+                    <span className=" fw-normal ms-1">(optional)</span>
+                  </label>
+                  <input
+                    type="file"
+                    className={`form-control ${touched.receiptFile && formErrors.receiptFile
+                      ? "is-invalid"
+                      : touched.receiptFile && receiptFile && !formErrors.receiptFile
+                        ? "is-valid"
+                        : ""
+                      }`}
+                    accept="image/jpeg,image/png,image/webp,application/pdf"
+                    onChange={handleFileChange}
+                  />
+
+                  {/* Error message */}
+                  {touched.receiptFile && formErrors.receiptFile && (
+                    <div className="invalid-feedback d-block">
+                      {formErrors.receiptFile}
+                    </div>
+                  )}
+
+                  {/* Success message — file selected and valid */}
+                  {receiptFile && !formErrors.receiptFile && (
+                    <small className="text-success d-block mt-1">
+                      ✓ {receiptFile.name} ({(receiptFile.size / 1024 / 1024).toFixed(2)}MB)
+                    </small>
+                  )}
+
+                  {/* Helper text — no file selected yet */}
+                  {!receiptFile && !formErrors.receiptFile && (
+                    <small className=" d-block mt-1">
+                      Accepts JPG, PNG, WEBP or PDF · Max {MAX_FILE_SIZE_MB}MB
+                    </small>
+                  )}
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button className="btn btn-dark" onClick={closeConfirmModal}>
+                  <X size={16} className="me-1" /> Cancel
+                </button>
+                <button
+                  className="btn btn-success"
+                  onClick={handleConfirmPayment}
+                  disabled={confirming}
+                >
+                  {confirming ? (
+                    <><span className="spinner-border spinner-border-sm me-2" />Confirming…</>
+                  ) : (
+                    <><CheckCircle size={16} className="me-1" />Confirm Payment</>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── View Receipt Modal ────────────────────────────────────────────── */}
+      {receiptModal && receiptPayslip && (
+        <div
+          className="modal show fade"
+          style={{
+            display: "block",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 1050,
+          }}
+        >
+          <div className="modal-dialog modal-dialog-centered modal-lg">
+            <div className="modal-content">
+              <div className="modal-header">
+                <div>
+                  <h5 className="modal-title mb-0">Payslip</h5>
+                  <small className="">
+                    {receiptPayslip.employeeName} · {MONTHS[receiptPayslip.month - 1]} {receiptPayslip.year}
+                  </small>
+                </div>
+                <button
+                  className="btn-close"
+                  onClick={() => { setReceiptModal(false); setReceiptPayslip(null); }}
+                />
+              </div>
+              <div className="modal-body">
+                <div className="row g-3 mb-4">
+                  <div className="col-md-6">
+                    <table className="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr>
+                          <td width="130"><strong>Employee:</strong></td>
+                          <td>{receiptPayslip.employeeName}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Amount Paid:</strong></td>
+                          <td className="text-success fw-bold">
+                            {fmtCurrency(receiptPayslip.amountDue, currencyCode)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><strong>Reference:</strong></td>
+                          <td>{receiptPayslip.paymentReference ?? "—"}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="col-md-6">
+                    <table className="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr>
+                          <td width="130"><strong>Date Paid:</strong></td>
+                          <td>
+                            {receiptPayslip.datePaid
+                              ? new Date(receiptPayslip.datePaid).toLocaleDateString("en-GB", {
+                                day: "2-digit", month: "short", year: "numeric",
+                              })
+                              : "—"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><strong>Confirmed By:</strong></td>
+                          <td>{receiptPayslip.paidByName ?? "—"}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Period:</strong></td>
+                          <td>{MONTHS[receiptPayslip.month - 1]} {receiptPayslip.year}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                {receiptPayslip.paymentReceiptPath && (
+                  <div className="border rounded p-2 text-center">
+                    {receiptPayslip.paymentReceiptPath.toLowerCase().endsWith(".pdf") ? (
+                      <div className="py-4">
+                        <i className="ri-file-pdf-line fs-42 text-success d-block mb-2" />
+
+                        <a
+                          href={`${BASE_URL}/${receiptPayslip.paymentReceiptPath}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn btn-sm btn-outline-success"
+                        >
+                          View Payslip
+                        </a>
+                      </div>
+                    ) : (
+                      <iframe
+                        src={`${BASE_URL}/${receiptPayslip.paymentReceiptPath}`}
+                        style={{ width: '100%', height: '600px', border: '1px solid #dee2e6', borderRadius: '4px' }}
+                        title="Resume"
+                      // alt="Payment receipt"
+                      // className="img-fluid rounded"
+                      // style={{ maxHeight: 400, objectFit: "contain" }}
+                      />
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-dark"
+                  onClick={() => { setReceiptModal(false); setReceiptPayslip(null); }}
+                >
+                  <X size={16} className="me-1" /> Close
+                </button>
+                {receiptPayslip.paymentReceiptPath && (
+                  <a
+                    href={`${BASE_URL}/${receiptPayslip.paymentReceiptPath}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn btn-primary"
+                  >
+                    <i className="ri-download-2-line me-1" /> Download
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div >
+      )}
+    </div >
   );
 };
 

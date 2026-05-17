@@ -1,4 +1,4 @@
-const BaseURL = "http://localhost:5127";
+const BaseURL = import.meta.env.VITE_API_URL;
 const token = localStorage.getItem("token");
 
 export const CreateInterview = async (data: FormData) => {
@@ -13,8 +13,22 @@ export const CreateInterview = async (data: FormData) => {
   return response;
 };
 
+export const GetResponses = async (jobId: number, jobSeekerId: number) => {
+  const response = await fetch(
+    `${BaseURL}/interviews/${jobId}/${jobSeekerId}/responses`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.json();
+};
+
+
 export const UpdateQuestion = async (data: FormData) => {
-  const response = await fetch(`${BaseURL}/interview/update-question`, {
+  const response = await fetch(`${BaseURL}/interviews/update-question`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -22,19 +36,12 @@ export const UpdateQuestion = async (data: FormData) => {
     body: data,
   });
 
-  console.log(response);
   return response;
-};
 
-// export const PublishJob = async (jobId: number) => {
-//   const response = await fetch(`${BaseURL}/jobs/${jobId}/publish`, {
-//     method: "PUT",
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   return response;
-// };
+  // const result = await response.text(); 
+  // console.log("Status:", response.status);
+  // console.log("Response body:", result);
+};
 
 export const GetAllQuestions = async (jobInterviewId: number) => {
   const response = await fetch(
@@ -56,54 +63,5 @@ export const DeleteQuestion = async (id: number) => {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.json();
+  return response;
 };
-
-// export const GetJob = async (jobId: number) => {
-//   const response = await fetch(`${BaseURL}/jobs/${jobId}`, {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   return response.json();
-// };
-
-// // job meta
-// export const getJobTypes = async () => {
-//   const response = await fetch(`${BaseURL}/job-meta/types`, {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-
-//   return response.json();
-// };
-
-// export const getJobSectors = async () => {
-//   const response = await fetch(`${BaseURL}/job-meta/sectors`, {
-//     method: "GET",
-//   });
-
-//   return response.json();
-// };
-
-// export const getJobCategories = async (jobSectorId: number) => {
-//   const response = await fetch(
-//     `${BaseURL}/job-meta/${jobSectorId}/categories`,
-//     {
-//       method: "GET",
-//     },
-//   );
-
-//   return response.json();
-// };
-
-// export const getJobWorkMode = async () => {
-//   const response = await fetch(`${BaseURL}/workmode`, {
-//     method: "GET",
-//   });
-
-//   return response.json();
-// };

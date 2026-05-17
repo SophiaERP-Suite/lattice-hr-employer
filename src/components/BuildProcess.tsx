@@ -16,6 +16,8 @@ interface Step {
 type BuildProcessProps = {
   view: boolean;
   length: number;
+  initialSteps?: Step[];
+  onStepsChange?: (steps: Step[]) => void;
 };
 
 const BuildProcess = ({ view, length = 1 }: BuildProcessProps) => {

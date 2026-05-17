@@ -10,3 +10,14 @@ export interface QuestionFormData {
   hint?: string;
   displayOrder: number;
 }
+
+
+export interface CandidateInterviewResponseDto {
+  candidateInterviewResponseId: number;
+  interviewQuestionId: number;
+  jobId: number;
+  jobSeekerId: number;
+  audioUrl: string;
+  dateCreated: string;
+  jobSeeker: any | null;
+}
