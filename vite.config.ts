@@ -6,7 +6,7 @@ export default defineConfig({
   base: "/one/lhr_emp/",
   plugins: [react()],
   server: {
-    host: '192.168.1.171',
+    host: '192.168.1.178',
     port: 5173,
   },
 })
